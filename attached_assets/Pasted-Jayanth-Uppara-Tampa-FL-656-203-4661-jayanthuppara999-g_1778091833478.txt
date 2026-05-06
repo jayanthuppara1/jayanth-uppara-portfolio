@@ -1,0 +1,47 @@
+Jayanth Uppara
+Tampa, FL | 656-203-4661 | jayanthuppara999@gmail.com | linkedin.com/in/jayanthu
+
+Professional Summary
+Software Engineer focused on BI and data products, with 4+ experience building digital products, backend services, automation workflows, and cloud data platforms across government, higher education, and life sciences. Strong in Python, Flask, FastAPI, REST APIs, SQL, Snowflake, AWS, and AI-assisted development, with hands on full-stack exposure through JavaScript, C# MVC, HTML/CSS, and product-focused personal projects. Known for owning work end-to-end, translating user problems into practical software solutions, and improving reliability, usability, and delivery speed in regulated environments.
+
+Professional Experience
+Franchise Tax Board | Sacramento, CA
+IT Associate | Jan 2026 – Present
+•	Build internal backend services and workflow automation using Python, Flask, FastAPI, SQL Server, and REST style service logic for regulated tax operations.
+•	Own features across the full product lifecycle, from understanding analyst pain points and designing backend workflows to testing, documentation, deployment support, and iteration.
+•	Develop SQL driven application logic using complex T-SQL, CTEs, joins, window functions, and reusable KPI rules across large state tax datasets.
+•	Automate recurring weekly, monthly, and annual processes, reducing manual handoffs and improving consistency for audit, compliance, and operational teams.
+University of South Florida | Tampa, FL
+BI Engineer Intern| Oct 2023 – May 2025
+•	Owned end-to-end development of a Power BI ticketing product for USF IT, giving teams visibility into equipment support work by owner, assignment, status, and resolution progress.
+•	Built self service finance reporting experiences using SSRS, Power BI, SQL, Python, Snowflake, and Excel for budget owners across 3–5 campus units.
+•	Cleaned, joined, validated, and modeled operational datasets to improve reporting accuracy, metric consistency, and decision support.
+•	Worked directly with Finance and IT stakeholders to identify meaningful user problems, refine dashboard usability, document metric logic, and enable long term handoff.
+Cognizant Technology Solutions | Chennai, India
+Data Engineer, Gilead Sciences Client Engagement | Jan 2022 – Jul 2023
+•	Engineered production PySpark ETL pipelines on AWS for Gilead Sciences, supporting clinical and marketing analytics workflows across S3, Glue, Athena, Redshift, and Airflow/MWAA.
+•	Owned reliability for SLA bound production pipelines, including job monitoring, failure triage, debugging, data quality fixes, and overnight on call support.
+•	Built new pipelines and hardened inherited systems in a 3 engineer team, improving scalability, observability, and maintainability for downstream analytics products.
+•	Implemented reconciliation and validation checks across approximately 100K records per run before BI consumption, improving trust in regulated life sciences data delivery.
+Samsung R&D Institute | Bengaluru, India
+Research Intern, Gesture Recognition | Apr 2021 – Dec 2021
+•	Built an applied machine learning prototype for touchless smart TV control and gaming, replacing remote control actions with camera based hand gestures.
+•	Designed gesture taxonomies and interaction patterns that balanced recognition accuracy with natural, intuitive user movement.
+•	Created a labeled gesture dataset from thousands of motion sequences and developed Python preprocessing pipelines using OpenCV, pandas, SciPy, and scikit-learn.
+•	Trained, evaluated, and integrated ML models into an Android demo, showing end-to-end product thinking from user interaction design to working prototype.
+
+Technical Skills
+•	Backend & APIs: Python, Flask, FastAPI, REST APIs, Node.js, C# MVC, Automation, Service Logic
+•	Frontend: JavaScript, HTML, CSS, Responsive Web Apps, Power BI Product Experiences
+•	AI & Dev Tools: Claude, ChatGPT, GitHub Copilot, Replit, Lovable, AI-Assisted Coding Workflows, Prompt-Driven Prototyping, Rapid Product Development
+•	Cloud & Data Engineering: AWS S3, Glue, Athena, Redshift, Lambda, Airflow, PySpark, ETL/ELT, Data Quality, SLA Monitoring, Snowflake
+•	Databases & BI: SQL Server, PostgreSQL, Snowflake, Teradata, T-SQL, Power BI, SSRS, Tableau, Excel
+
+Education 
+•	M.S., Business Analytics and Information Systems | University of South Florida, Tampa, FL | May 2025
+•	B.Tech, Electronics and Communication Engineering | Karunya University, Coimbatore, India | May 2022
+
+Certifications 
+•	AWS Certified Solutions Architect – Associate 
+•	Microsoft PL-300 Power BI Data Analyst
+
