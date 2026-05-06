@@ -248,6 +248,20 @@
   transform-origin: bottom center;
 }
 
+/* ── Fast steam for hover state ── */
+.mug-steam-fast-1 {
+  animation: steam-waft 1.1s ease-in infinite;
+  transform-origin: bottom center;
+}
+.mug-steam-fast-2 {
+  animation: steam-waft 1.1s ease-in infinite 0.22s;
+  transform-origin: bottom center;
+}
+.mug-steam-fast-3 {
+  animation: steam-waft 1.1s ease-in infinite 0.44s;
+  transform-origin: bottom center;
+}
+
 /* ── Coffee cup illustration bob ── */
 @keyframes coffee-bob {
   0%, 100% { transform: translateY(0px); }

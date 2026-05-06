@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { Github, Linkedin, Mail, ExternalLink, Terminal, Database, Cloud, FileCode2, MapPin, Phone, Download, Star, Award, Layers, Users } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
 import HeroParticles from "@/components/HeroParticles";
-import CoffeeMugLetter from "@/components/CoffeeMugLetter";
 import SteamDeco from "@/components/SteamDeco";
 
 import project1Img from "../assets/project-1.png";
@@ -55,89 +54,198 @@ function SpeechBubble() {
 
 /* ─── Animated coffee cup illustration ─── */
 function AnimatedCoffeeCup() {
+  const [hovering, setHovering] = useState(false);
+  const [rippleKey, setRippleKey] = useState(0);
+  const [rippleActive, setRippleActive] = useState(false);
+  const [clicking, setClicking] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useTransform(mouseY, [-120, 120], [8, -8]);
+  const rotateY = useTransform(mouseX, [-120, 120], [-8, 8]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set(e.clientX - rect.left - rect.width / 2);
+    mouseY.set(e.clientY - rect.top - rect.height / 2);
+  };
+
+  const handleMouseLeave = () => {
+    setHovering(false);
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  const handleClick = () => {
+    setRippleKey(k => k + 1);
+    setRippleActive(true);
+    setClicking(true);
+    setTimeout(() => setRippleActive(false), 900);
+    setTimeout(() => setClicking(false), 600);
+  };
+
+  const steamOpacity = hovering ? 0.8 : 0.45;
+  const steam1Class = hovering ? "mug-steam-fast-1" : "mug-steam-1";
+  const steam2Class = hovering ? "mug-steam-fast-2" : "mug-steam-2";
+  const steam3Class = hovering ? "mug-steam-fast-3" : "mug-steam-3";
+
   return (
-    <div className="coffee-bob">
-      <svg
-        viewBox="0 0 160 210"
-        width="200"
-        height="220"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
+    <div
+      ref={containerRef}
+      className="coffee-bob cursor-pointer select-none"
+      style={{ perspective: "600px" }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+    >
+      <motion.div
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        animate={clicking ? { y: [-4, 7, -4, 2, 0] } : { y: 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
       >
-        {/* Saucer */}
-        <ellipse cx="80" cy="192" rx="62" ry="10" fill="rgba(59,31,18,0.5)" stroke="#a0622a" strokeWidth="1.5" />
-
-        {/* Cup body */}
-        <path
-          d="M 28 68 L 132 68 L 121 168 Q 119 180 80 180 Q 41 180 39 168 Z"
-          fill="rgba(59,31,18,0.45)"
-          stroke="#a0622a"
-          strokeWidth="2.5"
-          strokeLinejoin="round"
-        />
-
-        {/* Handle */}
-        <path
-          d="M 132 90 C 162 90 162 142 132 142"
+        <svg
+          viewBox="0 0 180 240"
+          width="200"
+          height="230"
           fill="none"
-          stroke="#a0622a"
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-
-        {/* Rim */}
-        <path
-          d="M 24 68 Q 80 57 136 68"
-          fill="rgba(160,98,42,0.25)"
-          stroke="#c9a97a"
-          strokeWidth="2"
-          strokeLinejoin="round"
-        />
-
-        {/* Coffee surface */}
-        <ellipse cx="80" cy="84" rx="44" ry="9" fill="rgba(59,31,18,0.75)" />
-        <ellipse cx="72" cy="82" rx="14" ry="5" fill="rgba(160,98,42,0.2)" />
-
-        {/* Steam wisps */}
-        <path
-          d="M 58 66 C 54 52 62 42 58 28"
-          stroke="#c9a97a"
-          strokeWidth="2"
-          strokeLinecap="round"
-          opacity="0.45"
-          className="mug-steam-1"
-        />
-        <path
-          d="M 80 63 C 76 49 84 39 80 25"
-          stroke="#c9a97a"
-          strokeWidth="2"
-          strokeLinecap="round"
-          opacity="0.45"
-          className="mug-steam-2"
-        />
-        <path
-          d="M 102 66 C 98 52 106 42 102 28"
-          stroke="#c9a97a"
-          strokeWidth="2"
-          strokeLinecap="round"
-          opacity="0.45"
-          className="mug-steam-3"
-        />
-
-        {/* Brand mark inside cup */}
-        <text
-          x="80"
-          y="136"
-          textAnchor="middle"
-          fontSize="18"
-          fontFamily="Georgia, serif"
-          fill="rgba(201,169,122,0.35)"
-          fontWeight="700"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          className="md:w-[240px] md:h-[260px]"
         >
-          JU.
-        </text>
-      </svg>
+          {/* Drop shadow under saucer */}
+          <ellipse cx="90" cy="228" rx="66" ry="7" fill="rgba(0,0,0,0.38)" />
+
+          {/* Saucer outer */}
+          <ellipse cx="90" cy="220" rx="62" ry="9.5" fill="rgba(59,31,18,0.7)" stroke="#a0622a" strokeWidth="1.5" />
+          {/* Saucer inner lip */}
+          <ellipse cx="90" cy="219" rx="44" ry="5.5" fill="rgba(201,169,122,0.07)" stroke="#c9a97a" strokeWidth="0.8" />
+
+          {/* Cup body */}
+          <path
+            d="M 38 82 L 142 82 L 130 192 Q 128 208 90 208 Q 52 208 50 192 Z"
+            fill="rgba(59,31,18,0.55)"
+            stroke="#a0622a"
+            strokeWidth="2.5"
+            strokeLinejoin="round"
+          />
+
+          {/* Ceramic highlight strip (left sheen) */}
+          <path
+            d="M 42 88 L 60 190 Q 62 202 70 206"
+            stroke="rgba(253,246,238,0.10)"
+            strokeWidth="10"
+            strokeLinecap="round"
+            fill="none"
+          />
+
+          {/* Handle outer */}
+          <path
+            d="M 142 104 C 178 104 178 166 142 166"
+            fill="none"
+            stroke="#a0622a"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+          {/* Handle inner highlight */}
+          <path
+            d="M 142 114 C 168 114 168 156 142 156"
+            fill="none"
+            stroke="rgba(201,169,122,0.22)"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+
+          {/* Rim arc */}
+          <path
+            d="M 34 82 Q 90 70 146 82"
+            fill="rgba(160,98,42,0.28)"
+            stroke="#c9a97a"
+            strokeWidth="2"
+            strokeLinejoin="round"
+          />
+
+          {/* Coffee dark surface */}
+          <ellipse cx="90" cy="98" rx="48" ry="10" fill="rgba(18,8,3,0.88)" />
+
+          {/* Crema foam ring */}
+          <ellipse cx="90" cy="96" rx="40" ry="7" fill="rgba(140,82,30,0.32)" />
+
+          {/* Latte art swirl */}
+          <path
+            d="M 90 90 C 102 88 112 93 109 99 C 106 105 96 107 89 103 C 82 99 78 92 85 89 C 88 88 93 90 96 93"
+            stroke="rgba(201,169,122,0.55)"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            fill="none"
+          />
+
+          {/* Ripple on click */}
+          <AnimatePresence>
+            {rippleActive && (
+              <motion.ellipse
+                key={rippleKey}
+                cx="90"
+                cy="96"
+                rx={8}
+                ry={3}
+                fill="none"
+                stroke="#c9a97a"
+                strokeWidth="1.5"
+                initial={{ scaleX: 1, scaleY: 1, opacity: 0.85 }}
+                animate={{ scaleX: 6, scaleY: 5, opacity: 0 }}
+                exit={{}}
+                transition={{ duration: 0.75, ease: "easeOut" }}
+                style={{ transformOrigin: "90px 96px" }}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* Ring stain decorative motif */}
+          <ellipse cx="78" cy="166" rx="20" ry="4.5" fill="none" stroke="rgba(160,98,42,0.10)" strokeWidth="1" />
+
+          {/* Brand mark */}
+          <text
+            x="90"
+            y="158"
+            textAnchor="middle"
+            fontSize="17"
+            fontFamily="Georgia, serif"
+            fill="rgba(201,169,122,0.30)"
+            fontWeight="700"
+          >
+            JU.
+          </text>
+
+          {/* Steam wisps */}
+          <path
+            d="M 66 78 C 62 62 70 50 66 34"
+            stroke="#c9a97a"
+            strokeWidth="2"
+            strokeLinecap="round"
+            opacity={steamOpacity}
+            className={steam1Class}
+          />
+          <path
+            d="M 90 74 C 86 58 94 46 90 30"
+            stroke="#c9a97a"
+            strokeWidth="2"
+            strokeLinecap="round"
+            opacity={steamOpacity}
+            className={steam2Class}
+          />
+          <path
+            d="M 114 78 C 110 62 118 50 114 34"
+            stroke="#c9a97a"
+            strokeWidth="2"
+            strokeLinecap="round"
+            opacity={steamOpacity}
+            className={steam3Class}
+          />
+        </svg>
+      </motion.div>
     </div>
   );
 }
@@ -828,13 +936,12 @@ export default function Home() {
                 <span>Hello, I am</span>
               </motion.div>
 
-              {/* Name with coffee mug J */}
+              {/* Name */}
               <motion.h1
                 variants={STAGGER_CHILDREN}
-                className="text-5xl md:text-7xl font-serif font-bold tracking-tight mb-2 flex items-baseline gap-0 flex-wrap"
+                className="text-5xl md:text-7xl font-serif font-bold tracking-tight mb-2"
               >
-                <CoffeeMugLetter />
-                <span className="text-latte-gradient">ayanth Uppara</span>
+                <span className="text-latte-gradient">Jayanth Uppara</span>
               </motion.h1>
 
               {/* Professional tagline */}
