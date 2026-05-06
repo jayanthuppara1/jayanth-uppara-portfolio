@@ -30,7 +30,7 @@ export default function Home() {
   const [activeTitleIndex, setActiveTitleIndex] = useState(0);
   const titles = [
     "Product Engineer",
-    "Full-Stack Engineer",
+    "Full-Stack Software Engineer",
     "Data Platform Builder",
     "Backend Engineer"
   ];
@@ -283,11 +283,15 @@ export default function Home() {
                           ))}
                         </div>
                         <div className="flex gap-4">
-                          <Button variant="ghost" size="sm" className="gap-2 border-border/50 text-muted-foreground hover:text-foreground">
-                            <Github size={16} /> Code
+                          <Button variant="ghost" size="sm" className="gap-2 border-border/50 text-muted-foreground hover:text-foreground" asChild>
+                            <a href="https://github.com/jayanthu" target="_blank" rel="noopener noreferrer">
+                              <Github size={16} /> Code
+                            </a>
                           </Button>
-                          <Button variant="ghost" size="sm" className="gap-2 border-border/50 text-muted-foreground hover:text-foreground">
-                            <ExternalLink size={16} /> Live Demo
+                          <Button variant="ghost" size="sm" className="gap-2 border-border/50 text-muted-foreground hover:text-foreground" asChild>
+                            <a href="#" target="_blank" rel="noopener noreferrer">
+                              <ExternalLink size={16} /> Live Demo
+                            </a>
                           </Button>
                         </div>
                       </div>
@@ -318,7 +322,12 @@ export default function Home() {
                 {
                   title: "Backend & APIs",
                   icon: <FileCode2 className="text-primary" size={24}/>,
-                  skills: ["Python", "Flask", "FastAPI", "Node.js", "REST APIs", "C# MVC", "Automation"]
+                  skills: ["Python", "Flask", "FastAPI", "Node.js", "REST APIs", "C# MVC", "Automation", "Service Logic"]
+                },
+                {
+                  title: "Frontend",
+                  icon: <ExternalLink className="text-primary" size={24}/>,
+                  skills: ["JavaScript", "HTML/CSS", "Responsive Web Apps", "Power BI Product Experiences"]
                 },
                 {
                   title: "Cloud & Data Engineering",
@@ -333,7 +342,7 @@ export default function Home() {
                 {
                   title: "AI & Dev Tools",
                   icon: <Terminal className="text-primary" size={24}/>,
-                  skills: ["Claude", "ChatGPT", "GitHub Copilot", "Replit", "Lovable", "AI-Assisted Development"]
+                  skills: ["Claude", "ChatGPT", "GitHub Copilot", "Replit", "Lovable", "AI-Assisted Development", "Prompt-Driven Prototyping"]
                 }
               ].map((category, i) => (
                 <motion.div key={i} variants={STAGGER_CHILDREN} className="p-6 rounded-xl border border-border/50 bg-card/50">
@@ -375,22 +384,31 @@ export default function Home() {
                     degree: "M.S., Business Analytics & Information Systems",
                     school: "University of South Florida",
                     location: "Tampa, FL",
-                    date: "May 2025"
+                    date: "May 2025",
+                    url: "https://www.usf.edu"
                   },
                   {
                     degree: "B.Tech, Electronics & Communication Engineering",
                     school: "Karunya University",
                     location: "Coimbatore, India",
-                    date: "May 2022"
+                    date: "May 2022",
+                    url: "https://www.karunya.edu"
                   }
                 ].map((edu, i) => (
-                  <motion.div key={i} variants={STAGGER_CHILDREN} className="p-5 border border-border/50 rounded-lg bg-card hover:border-primary/30 transition-colors">
-                    <h4 className="font-bold text-lg mb-1">{edu.degree}</h4>
-                    <div className="text-primary font-medium mb-3">{edu.school}</div>
-                    <div className="flex justify-between text-sm text-muted-foreground font-mono">
-                      <span>{edu.location}</span>
-                      <span>{edu.date}</span>
-                    </div>
+                  <motion.div key={i} variants={STAGGER_CHILDREN}>
+                    <a
+                      href={edu.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block p-5 border border-border/50 rounded-lg bg-card hover:border-primary/50 hover:bg-card/80 transition-all group"
+                    >
+                      <h4 className="font-bold text-lg mb-1 group-hover:text-primary transition-colors">{edu.degree}</h4>
+                      <div className="text-primary font-medium mb-3">{edu.school}</div>
+                      <div className="flex justify-between text-sm text-muted-foreground font-mono">
+                        <span>{edu.location}</span>
+                        <span>{edu.date}</span>
+                      </div>
+                    </a>
                   </motion.div>
                 ))}
               </div>
