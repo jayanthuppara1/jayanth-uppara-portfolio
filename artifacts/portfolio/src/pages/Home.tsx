@@ -65,13 +65,75 @@ function SpeechBubble() {
   );
 }
 
+/* ─── Brew mini-game sounds (Web Audio API, no external files) ─── */
+function playDripSound(brewLevel: number) {
+  try {
+    const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+    // Pitch rises as cup fills — liquid in a fuller vessel resonates higher
+    const startFreq = 260 + (brewLevel / 100) * 220;
+    const endFreq   = 140 + (brewLevel / 100) * 120;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + 0.14);
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.25);
+    osc.onended = () => ctx.close();
+  } catch { /* audio not supported */ }
+}
+
+function playRewardSound() {
+  try {
+    const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+    // Ascending major arpeggio: C5 → E5 → G5 → C6
+    const notes = [523.25, 659.25, 783.99, 1046.5];
+    notes.forEach((freq, i) => {
+      const osc  = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = "sine";
+      const t = ctx.currentTime + i * 0.14;
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.0, t);
+      gain.gain.linearRampToValueAtTime(0.22, t + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.42);
+      osc.start(t);
+      osc.stop(t + 0.45);
+    });
+    setTimeout(() => ctx.close(), 1800);
+  } catch { /* audio not supported */ }
+}
+
+/* ─── Brew mini-game reward particles ─── */
+const REWARD_PARTICLES = [
+  { angle: 0,   color: "#c9a97a" },
+  { angle: 45,  color: "#f5cba7" },
+  { angle: 90,  color: "#a0622a" },
+  { angle: 135, color: "#c9a97a" },
+  { angle: 180, color: "#f5cba7" },
+  { angle: 225, color: "#a0622a" },
+  { angle: 270, color: "#c9a97a" },
+  { angle: 315, color: "#f5cba7" },
+];
+
 /* ─── Animated coffee cup illustration ─── */
 function AnimatedCoffeeCup() {
   const [hovering, setHovering] = useState(false);
   const [rippleKey, setRippleKey] = useState(0);
   const [rippleActive, setRippleActive] = useState(false);
   const [clicking, setClicking] = useState(false);
+  const [brewLevel, setBrewLevel] = useState(0);
+  const [rewarded, setRewarded] = useState(false);
+  const [rewardKey, setRewardKey] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const brewLevelRef = useRef(0);
+  const rewardedRef = useRef(false);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -92,173 +154,325 @@ function AnimatedCoffeeCup() {
   };
 
   const handleClick = () => {
+    if (rewardedRef.current) return;
     setRippleKey(k => k + 1);
     setRippleActive(true);
     setClicking(true);
     setTimeout(() => setRippleActive(false), 900);
     setTimeout(() => setClicking(false), 600);
+
+    const next = Math.min(brewLevelRef.current + 10, 100);
+    brewLevelRef.current = next;
+    setBrewLevel(next);
+    if (next >= 100) {
+      rewardedRef.current = true;
+      setRewarded(true);
+      setRewardKey(k => k + 1);
+      playRewardSound();
+      setTimeout(() => {
+        rewardedRef.current = false;
+        brewLevelRef.current = 0;
+        setRewarded(false);
+        setBrewLevel(0);
+      }, 2800);
+    } else {
+      playDripSound(next);
+    }
   };
 
-  const steamOpacity = hovering ? 0.8 : 0.45;
-  const steam1Class = hovering ? "mug-steam-fast-1" : "mug-steam-1";
-  const steam2Class = hovering ? "mug-steam-fast-2" : "mug-steam-2";
-  const steam3Class = hovering ? "mug-steam-fast-3" : "mug-steam-3";
+  // Steam intensity scales with brew level + hover
+  const brewBoost = brewLevel / 100;
+  const steamOpacity = Math.min((hovering ? 0.8 : 0.45) + brewBoost * 0.5, 1.0);
+  // Steam speed: animate faster as cup fills up
+  const steamDuration = hovering
+    ? Math.max(0.65, 1.1 - brewBoost * 0.45)
+    : Math.max(1.0, 2.2 - brewBoost * 1.2);
+
+  // Liquid fill: cup interior spans y=90 (full) to y=205 (empty), height=115
+  const liquidTop = 205 - (brewLevel / 100) * 115;
+
+  // Top surface opacity: fades from 0.15 (empty) to 1.0 (full) so cup looks emptier at 0%
+  const surfaceOpacity = 0.15 + brewBoost * 0.85;
 
   return (
-    <div
-      ref={containerRef}
-      className="coffee-bob cursor-pointer select-none"
-      style={{ perspective: "600px" }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHovering(true)}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-    >
-      <motion.div
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        animate={clicking ? { y: [-4, 7, -4, 2, 0] } : { y: 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
+    <div className="flex flex-col items-center gap-3">
+      <div
+        ref={containerRef}
+        className="coffee-bob cursor-pointer select-none relative"
+        style={{ perspective: "600px" }}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
+        title={brewLevel === 0 ? "Click to brew ☕" : `${brewLevel}% brewed — keep clicking!`}
       >
-        <svg
-          viewBox="0 0 180 240"
-          width="200"
-          height="230"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          className="md:w-[240px] md:h-[260px]"
+        <motion.div
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          animate={clicking ? { y: [-4, 7, -4, 2, 0] } : { y: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          {/* Drop shadow under saucer */}
-          <ellipse cx="90" cy="228" rx="66" ry="7" fill="rgba(0,0,0,0.38)" />
-
-          {/* Saucer outer */}
-          <ellipse cx="90" cy="220" rx="62" ry="9.5" fill="rgba(59,31,18,0.7)" stroke="#a0622a" strokeWidth="1.5" />
-          {/* Saucer inner lip */}
-          <ellipse cx="90" cy="219" rx="44" ry="5.5" fill="rgba(201,169,122,0.07)" stroke="#c9a97a" strokeWidth="0.8" />
-
-          {/* Cup body */}
-          <path
-            d="M 38 82 L 142 82 L 130 192 Q 128 208 90 208 Q 52 208 50 192 Z"
-            fill="rgba(59,31,18,0.55)"
-            stroke="#a0622a"
-            strokeWidth="2.5"
-            strokeLinejoin="round"
-          />
-
-          {/* Ceramic highlight strip (left sheen) */}
-          <path
-            d="M 42 88 L 60 190 Q 62 202 70 206"
-            stroke="rgba(253,246,238,0.10)"
-            strokeWidth="10"
-            strokeLinecap="round"
+          <svg
+            viewBox="0 0 180 240"
+            width="200"
+            height="230"
             fill="none"
-          />
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            className="md:w-[240px] md:h-[260px]"
+          >
+            <defs>
+              {/* Clip path matching the cup body interior */}
+              <clipPath id="cup-body-clip">
+                <path d="M 39 83 L 141 83 L 129 192 Q 127 207 90 207 Q 53 207 51 192 Z" />
+              </clipPath>
+            </defs>
 
-          {/* Handle outer */}
-          <path
-            d="M 142 104 C 178 104 178 166 142 166"
-            fill="none"
-            stroke="#a0622a"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-          {/* Handle inner highlight */}
-          <path
-            d="M 142 114 C 168 114 168 156 142 156"
-            fill="none"
-            stroke="rgba(201,169,122,0.22)"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-          />
+            {/* Drop shadow under saucer */}
+            <ellipse cx="90" cy="228" rx="66" ry="7" fill="rgba(0,0,0,0.38)" />
 
-          {/* Rim arc */}
-          <path
-            d="M 34 82 Q 90 70 146 82"
-            fill="rgba(160,98,42,0.28)"
-            stroke="#c9a97a"
-            strokeWidth="2"
-            strokeLinejoin="round"
-          />
+            {/* Saucer outer */}
+            <ellipse cx="90" cy="220" rx="62" ry="9.5" fill="rgba(59,31,18,0.7)" stroke="#a0622a" strokeWidth="1.5" />
+            {/* Saucer inner lip */}
+            <ellipse cx="90" cy="219" rx="44" ry="5.5" fill="rgba(201,169,122,0.07)" stroke="#c9a97a" strokeWidth="0.8" />
 
-          {/* Coffee dark surface */}
-          <ellipse cx="90" cy="98" rx="48" ry="10" fill="rgba(18,8,3,0.88)" />
+            {/* Cup body */}
+            <path
+              d="M 38 82 L 142 82 L 130 192 Q 128 208 90 208 Q 52 208 50 192 Z"
+              fill="rgba(59,31,18,0.55)"
+              stroke="#a0622a"
+              strokeWidth="2.5"
+              strokeLinejoin="round"
+            />
 
-          {/* Crema foam ring */}
-          <ellipse cx="90" cy="96" rx="40" ry="7" fill="rgba(140,82,30,0.32)" />
-
-          {/* Latte art swirl */}
-          <path
-            d="M 90 90 C 102 88 112 93 109 99 C 106 105 96 107 89 103 C 82 99 78 92 85 89 C 88 88 93 90 96 93"
-            stroke="rgba(201,169,122,0.55)"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            fill="none"
-          />
-
-          {/* Ripple on click */}
-          <AnimatePresence>
-            {rippleActive && (
-              <motion.ellipse
-                key={rippleKey}
+            {/* ── Brew liquid fill (rises from bottom with each click) ── */}
+            <rect
+              x="30"
+              width="120"
+              y={liquidTop}
+              height={Math.max(0, 210 - liquidTop)}
+              fill="rgba(101,55,20,0.82)"
+              clipPath="url(#cup-body-clip)"
+              style={{ transition: "y 0.4s cubic-bezier(0.34,1.56,0.64,1), height 0.4s cubic-bezier(0.34,1.56,0.64,1)" }}
+            />
+            {/* Liquid surface sheen */}
+            {brewLevel > 0 && (
+              <ellipse
                 cx="90"
-                cy="96"
-                rx={8}
-                ry={3}
-                fill="none"
-                stroke="#c9a97a"
-                strokeWidth="1.5"
-                initial={{ scaleX: 1, scaleY: 1, opacity: 0.85 }}
-                animate={{ scaleX: 6, scaleY: 5, opacity: 0 }}
-                exit={{}}
-                transition={{ duration: 0.75, ease: "easeOut" }}
-                style={{ transformOrigin: "90px 96px" }}
+                cy={liquidTop}
+                rx="46"
+                ry="7"
+                fill="rgba(140,82,30,0.55)"
+                clipPath="url(#cup-body-clip)"
+                style={{ transition: "cy 0.4s cubic-bezier(0.34,1.56,0.64,1)" }}
               />
             )}
-          </AnimatePresence>
 
-          {/* Ring stain decorative motif */}
-          <ellipse cx="78" cy="166" rx="20" ry="4.5" fill="none" stroke="rgba(160,98,42,0.10)" strokeWidth="1" />
+            {/* Ceramic highlight strip (left sheen) */}
+            <path
+              d="M 42 88 L 60 190 Q 62 202 70 206"
+              stroke="rgba(253,246,238,0.10)"
+              strokeWidth="10"
+              strokeLinecap="round"
+              fill="none"
+            />
 
-          {/* Brand mark */}
-          <text
-            x="90"
-            y="158"
-            textAnchor="middle"
-            fontSize="17"
-            fontFamily="Georgia, serif"
-            fill="rgba(201,169,122,0.30)"
-            fontWeight="700"
+            {/* Handle outer */}
+            <path
+              d="M 142 104 C 178 104 178 166 142 166"
+              fill="none"
+              stroke="#a0622a"
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+            {/* Handle inner highlight */}
+            <path
+              d="M 142 114 C 168 114 168 156 142 156"
+              fill="none"
+              stroke="rgba(201,169,122,0.22)"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            />
+
+            {/* Rim arc */}
+            <path
+              d="M 34 82 Q 90 70 146 82"
+              fill="rgba(160,98,42,0.28)"
+              stroke="#c9a97a"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            />
+
+            {/* Coffee dark surface — fades in as cup fills */}
+            <ellipse cx="90" cy="98" rx="48" ry="10" fill="rgba(18,8,3,0.88)" opacity={surfaceOpacity} style={{ transition: "opacity 0.3s ease" }} />
+
+            {/* Crema foam ring */}
+            <ellipse cx="90" cy="96" rx="40" ry="7" fill="rgba(140,82,30,0.32)" opacity={surfaceOpacity} style={{ transition: "opacity 0.3s ease" }} />
+
+            {/* Latte art swirl */}
+            <path
+              d="M 90 90 C 102 88 112 93 109 99 C 106 105 96 107 89 103 C 82 99 78 92 85 89 C 88 88 93 90 96 93"
+              stroke="rgba(201,169,122,0.55)"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              fill="none"
+              opacity={surfaceOpacity}
+              style={{ transition: "opacity 0.3s ease" }}
+            />
+
+            {/* Ripple on click */}
+            <AnimatePresence>
+              {rippleActive && (
+                <motion.ellipse
+                  key={rippleKey}
+                  cx="90"
+                  cy="96"
+                  rx={8}
+                  ry={3}
+                  fill="none"
+                  stroke="#c9a97a"
+                  strokeWidth="1.5"
+                  initial={{ scaleX: 1, scaleY: 1, opacity: 0.85 }}
+                  animate={{ scaleX: 6, scaleY: 5, opacity: 0 }}
+                  exit={{}}
+                  transition={{ duration: 0.75, ease: "easeOut" }}
+                  style={{ transformOrigin: "90px 96px" }}
+                />
+              )}
+            </AnimatePresence>
+
+            {/* Ring stain decorative motif */}
+            <ellipse cx="78" cy="166" rx="20" ry="4.5" fill="none" stroke="rgba(160,98,42,0.10)" strokeWidth="1" />
+
+            {/* Brand mark */}
+            <text
+              x="90"
+              y="158"
+              textAnchor="middle"
+              fontSize="17"
+              fontFamily="Georgia, serif"
+              fill="rgba(201,169,122,0.30)"
+              fontWeight="700"
+            >
+              JU.
+            </text>
+
+            {/* Steam wisps — speed and opacity scale with brew level */}
+            <path
+              d="M 66 78 C 62 62 70 50 66 34"
+              stroke="#c9a97a"
+              strokeWidth="2"
+              strokeLinecap="round"
+              opacity={steamOpacity}
+              style={{ animation: `steam-waft ${steamDuration}s ease-in infinite`, transformOrigin: "bottom center" }}
+            />
+            <path
+              d="M 90 74 C 86 58 94 46 90 30"
+              stroke="#c9a97a"
+              strokeWidth="2"
+              strokeLinecap="round"
+              opacity={steamOpacity}
+              style={{ animation: `steam-waft ${steamDuration}s ease-in infinite ${steamDuration * 0.2}s`, transformOrigin: "bottom center" }}
+            />
+            <path
+              d="M 114 78 C 110 62 118 50 114 34"
+              stroke="#c9a97a"
+              strokeWidth="2"
+              strokeLinecap="round"
+              opacity={steamOpacity}
+              style={{ animation: `steam-waft ${steamDuration}s ease-in infinite ${steamDuration * 0.4}s`, transformOrigin: "bottom center" }}
+            />
+
+            {/* ── Reward burst particles at 100% ── */}
+            <AnimatePresence>
+              {rewarded && REWARD_PARTICLES.map((p, i) => {
+                const rad = (p.angle * Math.PI) / 180;
+                const tx = Math.cos(rad) * 55;
+                const ty = Math.sin(rad) * 55;
+                return (
+                  <motion.circle
+                    key={`${rewardKey}-${i}`}
+                    cx="90"
+                    cy="145"
+                    r="4"
+                    fill={p.color}
+                    initial={{ cx: 90, cy: 145, opacity: 1, scale: 1 }}
+                    animate={{ cx: 90 + tx, cy: 145 + ty, opacity: 0, scale: 0.3 }}
+                    exit={{}}
+                    transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.04 }}
+                  />
+                );
+              })}
+            </AnimatePresence>
+          </svg>
+        </motion.div>
+      </div>
+
+      {/* ── Idle hint (shown before first click) ── */}
+      <AnimatePresence>
+        {brewLevel === 0 && !rewarded && (
+          <motion.div
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.35 }}
+            className="flex flex-col items-center gap-0.5 text-center"
           >
-            JU.
-          </text>
+            <p className="text-coffee-latte/70 text-xs font-sans tracking-wide">
+              Click to brew ☕
+            </p>
+            <p className="text-coffee-latte/40 text-[10px] font-sans">
+              Choose your drink:{" "}
+              <span className="line-through opacity-60">Latte · Cappuccino · Flat White</span>
+            </p>
+            <p className="text-coffee-bronze/70 text-[10px] font-sans italic">
+              N/A — Jayanth only drinks Americano.
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-          {/* Steam wisps */}
-          <path
-            d="M 66 78 C 62 62 70 50 66 34"
-            stroke="#c9a97a"
-            strokeWidth="2"
-            strokeLinecap="round"
-            opacity={steamOpacity}
-            className={steam1Class}
-          />
-          <path
-            d="M 90 74 C 86 58 94 46 90 30"
-            stroke="#c9a97a"
-            strokeWidth="2"
-            strokeLinecap="round"
-            opacity={steamOpacity}
-            className={steam2Class}
-          />
-          <path
-            d="M 114 78 C 110 62 118 50 114 34"
-            stroke="#c9a97a"
-            strokeWidth="2"
-            strokeLinecap="round"
-            opacity={steamOpacity}
-            className={steam3Class}
-          />
-        </svg>
-      </motion.div>
+      {/* ── Brew progress bar + label ── */}
+      <AnimatePresence>
+        {brewLevel > 0 && !rewarded && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-col items-center gap-1.5 w-[160px] md:w-[200px]"
+          >
+            <div className="text-coffee-latte/80 text-xs font-sans tracking-wide">
+              {brewLevel}% brewed ☕
+            </div>
+            <div className="w-full h-1.5 rounded-full bg-coffee-espresso/60 overflow-hidden border border-coffee-bronze/20">
+              <motion.div
+                className="h-full rounded-full bg-gradient-to-r from-amber-800 to-amber-500"
+                animate={{ width: `${brewLevel}%` }}
+                transition={{ type: "spring", stiffness: 120, damping: 18 }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Reward celebration overlay ── */}
+      <AnimatePresence>
+        {rewarded && (
+          <motion.div
+            key={rewardKey}
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl border border-coffee-bronze/40 bg-coffee-espresso/90 backdrop-blur-sm text-center"
+          >
+            <span className="text-base">✨</span>
+            <p className="text-coffee-latte text-xs font-sans leading-snug max-w-[160px]">
+              Fully caffeinated.<br />Let's build something.
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
