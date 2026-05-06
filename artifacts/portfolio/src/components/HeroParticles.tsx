@@ -8,6 +8,7 @@ interface Particle {
   radius: number;
   alpha: number;
   baseAlpha: number;
+  warm: boolean;
 }
 
 export default function HeroParticles() {
@@ -28,27 +29,33 @@ export default function HeroParticles() {
     let mouse = { x: -9999, y: -9999 };
     let rafId = 0;
 
-    const PRIMARY_COLOR = "13, 213, 230";
+    /* Warm coffee palette — latte and bronze */
+    const LATTE_COLOR  = "201, 169, 122"; /* #c9a97a */
+    const BRONZE_COLOR = "160, 98, 42";   /* #a0622a */
 
     const resize = () => {
       const rect = canvas.parentElement!.getBoundingClientRect();
-      width = rect.width;
+      width  = rect.width;
       height = rect.height;
-      canvas.width = width;
+      canvas.width  = width;
       canvas.height = height;
     };
 
     const makeParticles = () => {
       const count = Math.min(Math.floor((width * height) / 14000), 90);
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        radius: Math.random() * 1.5 + 0.5,
-        alpha: Math.random() * 0.5 + 0.1,
-        baseAlpha: Math.random() * 0.5 + 0.1,
-      }));
+      particles = Array.from({ length: count }, () => {
+        const base = Math.random() * 0.45 + 0.08;
+        return {
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.22,
+          vy: (Math.random() - 0.5) * 0.22,
+          radius: Math.random() * 1.5 + 0.5,
+          alpha: base,
+          baseAlpha: base,
+          warm: Math.random() > 0.65, /* ~35% use bronze instead of latte */
+        };
+      });
     };
 
     const draw = () => {
@@ -66,25 +73,25 @@ export default function HeroParticles() {
           const force = (REPEL_RADIUS - dist) / REPEL_RADIUS;
           p.vx -= (dx / dist) * force * 0.04;
           p.vy -= (dy / dist) * force * 0.04;
-          p.alpha = Math.min(p.baseAlpha + force * 0.5, 0.9);
+          p.alpha = Math.min(p.baseAlpha + force * 0.5, 0.85);
         } else {
           p.alpha += (p.baseAlpha - p.alpha) * 0.05;
         }
 
         p.vx *= 0.98;
         p.vy *= 0.98;
+        p.x  += p.vx;
+        p.y  += p.vy;
 
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
+        if (p.x < 0)      p.x = width;
+        if (p.x > width)  p.x = 0;
+        if (p.y < 0)      p.y = height;
         if (p.y > height) p.y = 0;
 
+        const color = p.warm ? BRONZE_COLOR : LATTE_COLOR;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${PRIMARY_COLOR}, ${p.alpha})`;
+        ctx.fillStyle = `rgba(${color}, ${p.alpha})`;
         ctx.fill();
       }
 
@@ -96,12 +103,12 @@ export default function HeroParticles() {
           const dy = a.y - b.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < CONNECT_DIST) {
-            const opacity = (1 - dist / CONNECT_DIST) * 0.12;
+            const opacity = (1 - dist / CONNECT_DIST) * 0.10;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(${PRIMARY_COLOR}, ${opacity})`;
-            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = `rgba(${LATTE_COLOR}, ${opacity})`;
+            ctx.lineWidth   = 0.5;
             ctx.stroke();
           }
         }
@@ -115,14 +122,9 @@ export default function HeroParticles() {
       mouse = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
 
-    const onMouseLeave = () => {
-      mouse = { x: -9999, y: -9999 };
-    };
+    const onMouseLeave = () => { mouse = { x: -9999, y: -9999 }; };
 
-    const onResize = () => {
-      resize();
-      makeParticles();
-    };
+    const onResize = () => { resize(); makeParticles(); };
 
     resize();
     makeParticles();

@@ -4,6 +4,7 @@ import { Github, Linkedin, Mail, ExternalLink, Terminal, Database, Cloud, FileCo
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import CustomCursor from "@/components/CustomCursor";
 import HeroParticles from "@/components/HeroParticles";
+import CoffeeMugLetter from "@/components/CoffeeMugLetter";
 
 import project1Img from "../assets/project-1.png";
 import project2Img from "../assets/project-2.png";
@@ -18,6 +19,128 @@ const STAGGER_CONTAINER = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
 };
+
+/* ─── Speech bubble with rotating taglines ─── */
+const TAGLINES = [
+  "Brewing ideas into products ☕",
+  "Coffee → Code → Ship",
+  "Let's build something meaningful",
+];
+
+function SpeechBubble() {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % TAGLINES.length), 3800);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <div className="relative mb-4">
+      <div className="speech-bubble-tail px-5 py-2.5 rounded-2xl border border-coffee-bronze/30 bg-coffee-espresso/90 text-coffee-latte text-xs font-sans text-center min-w-[200px] backdrop-blur-sm">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={idx}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.35 }}
+            className="block"
+          >
+            {TAGLINES[idx]}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Animated coffee cup illustration ─── */
+function AnimatedCoffeeCup() {
+  return (
+    <div className="coffee-bob">
+      <svg
+        viewBox="0 0 160 210"
+        width="200"
+        height="220"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        {/* Saucer */}
+        <ellipse cx="80" cy="192" rx="62" ry="10" fill="rgba(59,31,18,0.5)" stroke="#a0622a" strokeWidth="1.5" />
+
+        {/* Cup body */}
+        <path
+          d="M 28 68 L 132 68 L 121 168 Q 119 180 80 180 Q 41 180 39 168 Z"
+          fill="rgba(59,31,18,0.45)"
+          stroke="#a0622a"
+          strokeWidth="2.5"
+          strokeLinejoin="round"
+        />
+
+        {/* Handle */}
+        <path
+          d="M 132 90 C 162 90 162 142 132 142"
+          fill="none"
+          stroke="#a0622a"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+
+        {/* Rim */}
+        <path
+          d="M 24 68 Q 80 57 136 68"
+          fill="rgba(160,98,42,0.25)"
+          stroke="#c9a97a"
+          strokeWidth="2"
+          strokeLinejoin="round"
+        />
+
+        {/* Coffee surface */}
+        <ellipse cx="80" cy="84" rx="44" ry="9" fill="rgba(59,31,18,0.75)" />
+        <ellipse cx="72" cy="82" rx="14" ry="5" fill="rgba(160,98,42,0.2)" />
+
+        {/* Steam wisps */}
+        <path
+          d="M 58 66 C 54 52 62 42 58 28"
+          stroke="#c9a97a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.45"
+          className="mug-steam-1"
+        />
+        <path
+          d="M 80 63 C 76 49 84 39 80 25"
+          stroke="#c9a97a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.45"
+          className="mug-steam-2"
+        />
+        <path
+          d="M 102 66 C 98 52 106 42 102 28"
+          stroke="#c9a97a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.45"
+          className="mug-steam-3"
+        />
+
+        {/* Brand mark inside cup */}
+        <text
+          x="80"
+          y="136"
+          textAnchor="middle"
+          fontSize="18"
+          fontFamily="Georgia, serif"
+          fill="rgba(201,169,122,0.35)"
+          fontWeight="700"
+        >
+          JU.
+        </text>
+      </svg>
+    </div>
+  );
+}
 
 /* ─── Animated counter hook ─── */
 function useCountUp(target: number, duration = 1600, start = false) {
@@ -84,8 +207,8 @@ export default function Home() {
   const titles = [
     "Product Engineer",
     "Full-Stack Software Engineer",
-    "Data Platform Builder",
-    "Backend Engineer"
+    "Backend & Cloud Builder",
+    "AI-Assisted Builder",
   ];
 
   useEffect(() => {
@@ -140,73 +263,149 @@ export default function Home() {
 
       {/* ── Hero ── */}
       <section id="about" className="relative min-h-[100dvh] flex items-center pt-16">
+        {/* Background effects */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.07] bg-[linear-gradient(to_right,#c9a97a12_1px,transparent_1px),linear-gradient(to_bottom,#c9a97a12_1px,transparent_1px)] bg-[size:32px_32px]" />
+          <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#c9a97a12_1px,transparent_1px),linear-gradient(to_bottom,#c9a97a12_1px,transparent_1px)] bg-[size:32px_32px]" />
           <div
-            className="absolute left-1/4 top-1/4 w-[500px] h-[500px] rounded-full opacity-[0.06] blur-[120px]"
+            className="absolute left-1/4 top-1/3 w-[600px] h-[600px] rounded-full opacity-[0.05] blur-[140px]"
             style={{ background: "radial-gradient(circle, #a0622a, transparent)" }}
           />
           <div
-            className="absolute right-0 bottom-0 w-[300px] h-[300px] rounded-full opacity-[0.04] blur-[100px]"
+            className="absolute right-10 bottom-20 w-[360px] h-[360px] rounded-full opacity-[0.04] blur-[110px]"
             style={{ background: "radial-gradient(circle, #c9a97a, transparent)" }}
           />
         </div>
         <HeroParticles />
 
-        <div className="max-w-6xl mx-auto px-6 w-full z-10 relative">
-          <motion.div initial="hidden" animate="visible" variants={STAGGER_CONTAINER} className="max-w-3xl">
-            <motion.div variants={STAGGER_CHILDREN} className="flex items-center gap-2 font-mono text-sm text-coffee-bronze mb-5">
-              <Terminal size={14} />
-              <span>Hello, I am</span>
-            </motion.div>
+        {/* Two-column layout */}
+        <div className="max-w-6xl mx-auto px-6 w-full z-10 relative py-16">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
-            <motion.h1 variants={STAGGER_CHILDREN} className="text-5xl md:text-7xl font-serif font-bold tracking-tight mb-4 text-latte-gradient">
-              Jayanth Uppara
-            </motion.h1>
+            {/* ── LEFT: Text content ── */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={STAGGER_CONTAINER}
+              className="flex-1 max-w-2xl"
+            >
+              {/* Hello label */}
+              <motion.div
+                variants={STAGGER_CHILDREN}
+                className="flex items-center gap-2 font-mono text-sm text-coffee-bronze mb-6"
+              >
+                <Terminal size={14} />
+                <span>Hello, I am</span>
+              </motion.div>
 
-            <motion.div variants={STAGGER_CHILDREN} className="text-xl md:text-3xl font-serif font-semibold text-coffee-latte mb-6 h-[36px] md:h-[44px] overflow-hidden">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTitleIndex}
-                  initial={{ y: 36, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -36, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+              {/* Name with coffee mug J */}
+              <motion.h1
+                variants={STAGGER_CHILDREN}
+                className="text-5xl md:text-7xl font-serif font-bold tracking-tight mb-2 flex items-baseline gap-0 flex-wrap"
+              >
+                <CoffeeMugLetter />
+                <span className="text-latte-gradient">ayanth Uppara</span>
+              </motion.h1>
+
+              {/* Professional tagline */}
+              <motion.p
+                variants={STAGGER_CHILDREN}
+                className="text-sm font-sans italic text-coffee-bronze mb-5 tracking-wide"
+              >
+                Building products at the intersection of engineering and data
+              </motion.p>
+
+              {/* Animated role title */}
+              <motion.div
+                variants={STAGGER_CHILDREN}
+                className="text-xl md:text-2xl font-serif font-semibold text-coffee-latte mb-7 h-[34px] md:h-[38px] overflow-hidden"
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTitleIndex}
+                    initial={{ y: 34, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -34, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {titles[activeTitleIndex]}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+
+              {/* Bio */}
+              <motion.p
+                variants={STAGGER_CHILDREN}
+                className="text-base leading-relaxed mb-7 font-sans text-coffee-latte/70"
+              >
+                Software Engineer with 4+ years shipping digital products, backend services, automation workflows, and cloud data platforms across government, higher ed, and life sciences. Known for owning work end-to-end and turning user problems into shipped solutions.
+              </motion.p>
+
+              {/* Location / email */}
+              <motion.div
+                variants={STAGGER_CHILDREN}
+                className="flex flex-wrap items-center gap-4 mb-9"
+              >
+                <span className="flex items-center gap-1.5 text-sm font-sans text-coffee-bronze">
+                  <MapPin size={13} /> Tampa, FL
+                </span>
+                <span className="text-coffee-bronze/30 hidden sm:inline">·</span>
+                <a
+                  href="mailto:jayanthuppara999@gmail.com"
+                  className="hidden sm:flex items-center gap-1.5 text-sm font-sans text-coffee-bronze hover:text-coffee-latte transition-colors"
                 >
-                  {titles[activeTitleIndex]}
-                </motion.div>
-              </AnimatePresence>
-            </motion.div>
+                  <Mail size={13} /> jayanthuppara999@gmail.com
+                </a>
+              </motion.div>
 
-            <motion.p variants={STAGGER_CHILDREN} className="text-base md:text-lg leading-relaxed mb-8 max-w-2xl font-sans text-coffee-latte/70">
-              Software Engineer focused on BI and data products, with 4+ years building digital products, backend services, automation workflows, and cloud data platforms across government, higher education, and life sciences. Known for owning work end-to-end, translating user problems into shipped solutions.
-            </motion.p>
-
-            <motion.div variants={STAGGER_CHILDREN} className="flex items-center gap-5 mb-10">
-              <span className="flex items-center gap-1.5 text-sm font-sans text-coffee-bronze">
-                <MapPin size={13} /> Tampa, FL
-              </span>
-              <span className="text-coffee-bronze/30 hidden md:inline">|</span>
-              <span className="hidden md:flex items-center gap-1.5 text-sm font-sans text-coffee-bronze">
-                <Mail size={13} /> jayanthuppara999@gmail.com
-              </span>
-            </motion.div>
-
-            <motion.div variants={STAGGER_CHILDREN} className="flex flex-wrap gap-4">
-              <button
-                onClick={() => scrollToSection('projects')}
-                className="px-8 py-3 rounded-lg font-semibold text-sm font-sans bg-coffee-bronze text-coffee-foam hover:bg-coffee-bronze-light transition-colors duration-200 active:scale-95"
+              {/* 4 CTA buttons */}
+              <motion.div
+                variants={STAGGER_CHILDREN}
+                className="flex flex-wrap gap-3"
               >
-                View My Work
-              </button>
-              <button
-                onClick={() => scrollToSection('contact')}
-                className="px-8 py-3 rounded-lg font-semibold text-sm font-sans border border-coffee-bronze/50 text-coffee-latte hover:bg-coffee-bronze/10 transition-colors duration-200"
-              >
-                Get In Touch
-              </button>
+                <button
+                  onClick={() => scrollToSection('projects')}
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-lg font-semibold text-sm font-sans bg-coffee-bronze text-coffee-foam hover:bg-coffee-bronze-light transition-colors duration-200 active:scale-95"
+                >
+                  View Projects
+                </button>
+                <a
+                  href="/JayanthUppara_Resume.pdf"
+                  download="JayanthUppara_Resume.pdf"
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-lg font-semibold text-sm font-sans border border-coffee-bronze/45 text-coffee-latte hover:bg-coffee-bronze/10 transition-colors duration-200"
+                >
+                  <Download size={15} /> Resume
+                </a>
+                <a
+                  href="https://github.com/jayanthu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm font-sans border border-coffee-bronze/30 text-coffee-bronze hover:text-coffee-latte hover:border-coffee-latte/35 transition-colors duration-200"
+                >
+                  <Github size={15} /> GitHub
+                </a>
+                <a
+                  href="https://linkedin.com/in/jayanthu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm font-sans border border-coffee-bronze/30 text-coffee-bronze hover:text-coffee-latte hover:border-coffee-latte/35 transition-colors duration-200"
+                >
+                  <Linkedin size={15} /> LinkedIn
+                </a>
+              </motion.div>
             </motion.div>
-          </motion.div>
+
+            {/* ── RIGHT: Animated illustration ── */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="hidden lg:flex flex-col items-center gap-0 flex-shrink-0"
+            >
+              <SpeechBubble />
+              <AnimatedCoffeeCup />
+            </motion.div>
+
+          </div>
         </div>
       </section>
 

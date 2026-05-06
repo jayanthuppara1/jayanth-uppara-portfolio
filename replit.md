@@ -1,56 +1,61 @@
 # Jayanth Uppara Portfolio
 
-Interactive personal portfolio website presenting Jayanth Uppara as a Product Engineer / Full-Stack Software Engineer.
+Interactive personal portfolio website for Jayanth Uppara (Product Engineer / Full-Stack Software Engineer, Tampa FL) with a coffee-themed dark espresso design.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/portfolio run dev` — run the portfolio (port 21113, root path `/`)
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080, path `/api`)
+- `pnpm --filter @workspace/portfolio run dev` — run the portfolio (port via $PORT, root path `/`)
+- `pnpm --filter @workspace/api-server run dev` — run the API server (path `/api`)
 - `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
+- Required env: none (pure static frontend)
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- Frontend: React 18 + Vite + Tailwind CSS v4 + framer-motion
-- API: Express 5 (not used by portfolio — standalone static frontend)
-- No database needed for portfolio
+- Frontend: React 18 + Vite + Tailwind CSS v4 + framer-motion + lucide-react
+- Fonts: Playfair Display (serif/headings) + DM Sans (body) + JetBrains Mono (labels)
+- No database — all content hardcoded in Home.tsx
 
 ## Where things live
 
-- `artifacts/portfolio/src/pages/Home.tsx` — entire portfolio UI (all 7 sections)
-- `artifacts/portfolio/src/index.css` — theme source of truth: CSS `@theme inline` block defines all semantic tokens (--background, --primary, etc.) AND coffee palette tokens (--color-coffee-latte, --color-coffee-bronze, etc.) usable as Tailwind utilities (text-coffee-latte, bg-coffee-bronze, etc.). No tailwind.config.ts needed — Tailwind v4 reads @theme from CSS.
+- `artifacts/portfolio/src/pages/Home.tsx` — full portfolio (all sections, inline components)
+- `artifacts/portfolio/src/index.css` — Tailwind v4 @theme inline: coffee palette tokens (`--color-coffee-latte`, `--color-coffee-bronze`, etc.) usable as `text-coffee-latte`, `bg-coffee-bronze`. Also defines steam/bob keyframes.
+- `artifacts/portfolio/src/components/CoffeeMugLetter.tsx` — SVG "J" styled as coffee mug with hover steam
+- `artifacts/portfolio/src/components/HeroParticles.tsx` — canvas particle bg (warm latte/bronze palette)
+- `artifacts/portfolio/src/components/CustomCursor.tsx` — latte-colored animated cursor
 - `artifacts/portfolio/src/assets/` — AI-generated project card images
-- `artifacts/portfolio/vite.config.ts` — Vite config with `@assets` alias and framer-motion dedupe
-- `artifacts/api-server/src/` — Express API server (health endpoint only)
+- `artifacts/portfolio/vite.config.ts` — framer-motion in `resolve.dedupe`, @assets alias
+- `artifacts/portfolio/public/JayanthUppara_Resume.pdf` — actual resume PDF
 
 ## Architecture decisions
 
-- Portfolio is a pure frontend SPA — no backend, no API calls, all content is hardcoded in Home.tsx
-- Dark mode as default (no toggle); dark navy background with cyan `hsl(189 94% 43%)` accent
-- framer-motion added to Vite `dedupe` list to prevent duplicate React instance errors
-- Single Home.tsx component with all sections inline (no page routing needed for a portfolio)
-- Project images generated via AI and stored in `src/assets/`
+- Pure frontend SPA — no backend, no API calls
+- Coffee palette: espresso `#1a0e08`, latte `#c9a97a`, bronze `#a0622a` as Tailwind v4 tokens
+- framer-motion **must stay** in `resolve.dedupe` — removing it causes "Cannot read properties of null (reading 'useRef')" at runtime
+- STAGGER_CHILDREN variants must NOT use `ease: "easeOut"` string — Framer Motion rejects plain string easing
+- Single Home.tsx with all sections inline + hero sub-components (SpeechBubble, AnimatedCoffeeCup defined at top of file)
 
 ## Product
 
-- Hero section with animated cycling job titles (framer-motion AnimatePresence)
-- Interactive Experience section — accordion cards for 4 employers (FTB, USF, Cognizant, Samsung)
-- Projects section with 3 project cards and AI-generated images
-- Skills section organized by category (Backend, Cloud/Data, Databases/BI, AI Tools)
-- Education and Certifications sections
-- Contact section with mailto, LinkedIn, GitHub, resume download
+- **Hero**: Two-column (text left, animated coffee cup illustration right); CoffeeMugLetter SVG replaces the "J"; rotating speech bubble taglines; 4 CTA buttons (View Projects, Resume ↓, GitHub, LinkedIn)
+- **Experience**: Accordion cards — FTB, USF, Cognizant, Samsung
+- **Projects**: 3 project cards with AI-generated images
+- **Skills**: Categorized (Backend, Cloud/Data, Databases/BI, AI Tools)
+- **Education & Certs**: USF MSBA + Karunya BTech; AWS SAA + PL-300
+- **Contact**: mailto, LinkedIn, GitHub, resume download
+- **Metrics Snapshot**: Animated counters (4+ yrs, 2 degrees, 3+ certs, 5+ projects…)
 
 ## User preferences
 
 - Name: Jayanth Uppara | Tampa, FL | jayanthuppara999@gmail.com | 656-203-4661
-- LinkedIn: linkedin.com/in/jayanthu
-- No emojis anywhere in the UI
+- LinkedIn: linkedin.com/in/jayanthu | GitHub: github.com/jayanthu
+- No emojis in the UI (speech bubble taglines are an exception by design)
 
 ## Gotchas
 
-- framer-motion must stay in `resolve.dedupe` in vite.config.ts — removing it causes "Cannot read properties of null (reading 'useRef')" at runtime
-- Resume PDF download and GitHub links are currently `#` placeholders — update when real files are available
+- framer-motion must stay in `resolve.dedupe` in vite.config.ts
+- Tailwind v4: no tailwind.config.ts — all theme config is inside `@theme inline` in index.css
+- Steam animation CSS classes (`.mug-steam-1/2/3`) rely on the `steam-waft` keyframe in index.css
 
 ## Pointers
 
