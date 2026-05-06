@@ -332,6 +332,24 @@ const CERTS = [
     provider: "Microsoft",
     year: "2024",
     icon: "PBI"
+  },
+  {
+    title: "Mathematics for Machine Learning Specialization",
+    provider: "Imperial College London · Coursera",
+    year: "2023",
+    icon: "ML"
+  },
+  {
+    title: "Data Visualization with Tableau Specialization",
+    provider: "UC Davis · Coursera",
+    year: "2023",
+    icon: "VIZ"
+  },
+  {
+    title: "Python for Everybody Specialization",
+    provider: "University of Michigan · Coursera",
+    year: "2022",
+    icon: "PY"
   }
 ];
 
@@ -706,6 +724,106 @@ function FlipCard({ project, index }: { project: typeof PROJECTS[number]; index:
         </div>
       </motion.div>
     </motion.div>
+  );
+}
+
+/* ─── Contact form with mailto fallback ─── */
+function ContactForm() {
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [message, setMessage] = React.useState("");
+  const [sent, setSent] = React.useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const subject = encodeURIComponent(`Hey Jayanth — reaching out from your portfolio`);
+    const body = encodeURIComponent(`Hi Jayanth,\n\nMy name is ${name} (${email}).\n\n${message}`);
+    window.location.href = `mailto:jayanthuppara999@gmail.com?subject=${subject}&body=${body}`;
+    setSent(true);
+    setTimeout(() => setSent(false), 5000);
+  };
+
+  const inputClass =
+    "w-full rounded-lg px-4 py-3 text-sm font-sans bg-coffee-espresso/70 border border-coffee-bronze/25 text-coffee-foam placeholder:text-coffee-latte/35 focus:outline-none focus:border-coffee-bronze/60 focus:ring-2 focus:ring-coffee-bronze/20 transition-all duration-200";
+
+  return (
+    <div className="p-6 rounded-xl border border-coffee-bronze/20 bg-coffee-espresso/50" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.2)" }}>
+      <AnimatePresence mode="wait">
+        {sent ? (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+            className="flex flex-col items-center justify-center gap-4 py-12 text-center"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 14, delay: 0.1 }}
+              className="w-14 h-14 rounded-full bg-coffee-bronze/20 border border-coffee-bronze/40 flex items-center justify-center text-coffee-latte text-2xl"
+            >
+              ☕
+            </motion.div>
+            <p className="font-serif text-xl font-semibold text-coffee-foam">Thanks! Your email client should open.</p>
+            <p className="font-sans text-sm text-coffee-latte/65">I'll get back to you within 24 hours.</p>
+          </motion.div>
+        ) : (
+          <motion.form
+            key="form"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4"
+          >
+            <div>
+              <label className="block font-mono text-xs uppercase tracking-widest text-coffee-bronze mb-1.5">Name</label>
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="Your secret identity"
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className="block font-mono text-xs uppercase tracking-widest text-coffee-bronze mb-1.5">Email</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="I promise I won't spam you"
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className="block font-mono text-xs uppercase tracking-widest text-coffee-bronze mb-1.5">Message</label>
+              <textarea
+                required
+                rows={5}
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                placeholder="Your message goes here — ask me anything"
+                className={`${inputClass} resize-none`}
+              />
+            </div>
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.02, backgroundColor: "#c27a3a" }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-lg bg-coffee-bronze text-coffee-foam font-semibold text-sm font-sans transition-colors duration-200"
+            >
+              <Mail size={15} /> Send Message
+            </motion.button>
+          </motion.form>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -1205,7 +1323,7 @@ export default function Home() {
                 <SteamDeco />
                 <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">05.</span> Certifications
               </motion.h2>
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {CERTS.map((cert, i) => (
                   <CertBadge key={i} cert={cert} index={i} />
                 ))}
@@ -1217,56 +1335,85 @@ export default function Home() {
       </section>
 
       {/* ── Contact ── */}
-      <section id="contact" className="py-32 relative text-center">
-        <div className="max-w-2xl mx-auto px-6">
+      <section id="contact" className="py-32 relative" style={{ background: "linear-gradient(160deg, rgba(26,14,8,0) 0%, rgba(59,31,18,0.35) 50%, rgba(26,14,8,0) 100%)" }}>
+        {/* Coffee-ring decorative motif */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+          <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full border border-coffee-bronze/8 opacity-40" />
+          <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full border border-coffee-bronze/10 opacity-30" />
+          <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full border border-coffee-latte/6 opacity-25" />
+        </div>
+
+        <div className="max-w-5xl mx-auto px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={STAGGER_CONTAINER}
           >
-            <motion.p variants={STAGGER_CHILDREN} className="font-mono text-xs tracking-[0.2em] uppercase text-coffee-bronze mb-4">
-              06. What's Next?
-            </motion.p>
-            <motion.h2 variants={HEADING_CHILD} className="text-4xl md:text-5xl font-serif font-bold text-coffee-foam mb-6">
-              Let's Build Something Together
-            </motion.h2>
-            <motion.p variants={STAGGER_CHILDREN} className="text-base leading-relaxed mb-12 font-sans text-coffee-latte/70">
-              Currently looking for new opportunities. Whether you have a question, a project in mind, or just want to say hi, my inbox is always open.
-            </motion.p>
+            <div className="text-center mb-12">
+              <motion.p variants={STAGGER_CHILDREN} className="font-mono text-xs tracking-[0.2em] uppercase text-coffee-bronze mb-4">
+                06. What's Next?
+              </motion.p>
+              <motion.h2 variants={HEADING_CHILD} className="text-4xl md:text-5xl font-serif font-bold text-coffee-foam mb-4">
+                Let's Build Something Together
+              </motion.h2>
+              <motion.p variants={STAGGER_CHILDREN} className="text-base leading-relaxed font-sans text-coffee-latte/70 max-w-xl mx-auto">
+                Currently open to new opportunities. Whether you have a project, a question, or just want to chat over (virtual) coffee — I'd love to hear from you.
+              </motion.p>
+            </div>
 
-            <motion.div variants={STAGGER_CHILDREN} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-              <a
-                href="mailto:jayanthuppara999@gmail.com"
-                className="flex items-center gap-2 px-8 py-3 rounded-lg font-semibold text-sm font-sans w-full sm:w-auto justify-center bg-coffee-bronze text-coffee-foam hover:bg-coffee-bronze-light transition-colors duration-200 active:scale-95"
-              >
-                <Mail size={16} /> Say Hello
-              </a>
-              <a
-                href="/JayanthUppara_Resume.pdf"
-                download="JayanthUppara_Resume.pdf"
-                className="flex items-center gap-2 px-8 py-3 rounded-lg font-semibold text-sm font-sans border border-coffee-bronze/40 text-coffee-latte w-full sm:w-auto justify-center hover:bg-coffee-bronze/10 transition-colors duration-200"
-              >
-                <Download size={16} /> Download Resume
-              </a>
-            </motion.div>
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
+              {/* ── Left: Contact Form ── */}
+              <motion.div variants={STAGGER_CHILDREN} className="lg:col-span-3">
+                <ContactForm />
+              </motion.div>
 
-            <motion.div variants={STAGGER_CHILDREN} className="flex justify-center gap-8">
-              {[
-                { href: "https://github.com/jayanthu",        icon: <Github size={22} />,   label: "GitHub" },
-                { href: "https://linkedin.com/in/jayanthu",   icon: <Linkedin size={22} />, label: "LinkedIn" },
-                { href: "tel:656-203-4661",                   icon: <Phone size={22} />,    label: "Phone" },
-              ].map(({ href, icon, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="text-coffee-bronze hover:text-coffee-latte transition-colors duration-200 hover:scale-110 inline-block"
-                >
-                  {icon}
-                  <span className="sr-only">{label}</span>
-                </a>
-              ))}
-            </motion.div>
+              {/* ── Right: Info panel ── */}
+              <motion.div variants={STAGGER_CHILDREN} className="lg:col-span-2 flex flex-col gap-8">
+                <div className="p-6 rounded-xl border border-coffee-bronze/20 bg-coffee-espresso/50" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.2)" }}>
+                  <p className="font-serif text-lg font-semibold text-coffee-foam mb-2">Currently available</p>
+                  <p className="font-sans text-sm text-coffee-latte/70 leading-relaxed mb-4">
+                    Based in Tampa, FL · Open to remote &amp; hybrid roles · Usually reply within 24 hours.
+                  </p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    <span className="font-mono text-xs text-coffee-latte/60">Open to opportunities</span>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-widest text-coffee-bronze mb-3">Reach me directly</p>
+                  <a
+                    href="mailto:jayanthuppara999@gmail.com"
+                    className="flex items-center gap-2 text-coffee-latte hover:text-coffee-foam transition-colors duration-200 font-sans text-sm font-medium group"
+                  >
+                    <Mail size={15} className="text-coffee-bronze group-hover:text-coffee-latte transition-colors" />
+                    jayanthuppara999@gmail.com
+                  </a>
+                </div>
+
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-widest text-coffee-bronze mb-4">Find me online</p>
+                  <div className="flex flex-wrap gap-3">
+                    {[
+                      { href: "https://github.com/jayanthu",        icon: <Github size={18} />,   label: "GitHub",   extra: {} },
+                      { href: "https://linkedin.com/in/jayanthu",   icon: <Linkedin size={18} />, label: "LinkedIn", extra: { target: "_blank", rel: "noopener noreferrer" } },
+                      { href: "tel:656-203-4661",                   icon: <Phone size={18} />,    label: "Phone",    extra: {} },
+                      { href: "/JayanthUppara_Resume.pdf",          icon: <Download size={18} />, label: "Resume",   extra: { download: "JayanthUppara_Resume.pdf" } },
+                    ].map(({ href, icon, label, extra }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        {...extra}
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg border border-coffee-bronze/25 bg-coffee-mocha/30 text-coffee-latte/80 hover:text-coffee-foam hover:border-coffee-bronze/50 hover:bg-coffee-bronze/10 transition-all duration-200 font-sans text-xs font-medium"
+                      >
+                        {icon} {label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </section>
