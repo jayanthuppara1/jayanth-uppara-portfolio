@@ -1,45 +1,58 @@
-# [Project name]
+# Jayanth Uppara Portfolio
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Interactive personal portfolio website presenting Jayanth Uppara as a Product Engineer / Full-Stack Software Engineer.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/portfolio run dev` — run the portfolio (port 21113, root path `/`)
+- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080, path `/api`)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Frontend: React 18 + Vite + Tailwind CSS v4 + framer-motion
+- API: Express 5 (not used by portfolio — standalone static frontend)
+- No database needed for portfolio
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/portfolio/src/pages/Home.tsx` — entire portfolio UI (all 7 sections)
+- `artifacts/portfolio/src/index.css` — theme (dark mode, cyan primary accent)
+- `artifacts/portfolio/src/assets/` — AI-generated project card images
+- `artifacts/portfolio/vite.config.ts` — Vite config with `@assets` alias and framer-motion dedupe
+- `artifacts/api-server/src/` — Express API server (health endpoint only)
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Portfolio is a pure frontend SPA — no backend, no API calls, all content is hardcoded in Home.tsx
+- Dark mode as default (no toggle); dark navy background with cyan `hsl(189 94% 43%)` accent
+- framer-motion added to Vite `dedupe` list to prevent duplicate React instance errors
+- Single Home.tsx component with all sections inline (no page routing needed for a portfolio)
+- Project images generated via AI and stored in `src/assets/`
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Hero section with animated cycling job titles (framer-motion AnimatePresence)
+- Interactive Experience section — accordion cards for 4 employers (FTB, USF, Cognizant, Samsung)
+- Projects section with 3 project cards and AI-generated images
+- Skills section organized by category (Backend, Cloud/Data, Databases/BI, AI Tools)
+- Education and Certifications sections
+- Contact section with mailto, LinkedIn, GitHub, resume download
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Name: Jayanth Uppara | Tampa, FL | jayanthuppara999@gmail.com | 656-203-4661
+- LinkedIn: linkedin.com/in/jayanthu
+- No emojis anywhere in the UI
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- framer-motion must stay in `resolve.dedupe` in vite.config.ts — removing it causes "Cannot read properties of null (reading 'useRef')" at runtime
+- Resume PDF download and GitHub links are currently `#` placeholders — update when real files are available
 
 ## Pointers
 
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- See the `react-vite` skill for frontend conventions
+- See the `design` skill for delegating UI work to DESIGN subagent
