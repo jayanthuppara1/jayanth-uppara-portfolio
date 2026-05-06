@@ -146,31 +146,37 @@ function AnimatedCoffeeCup() {
 
 const PROJECTS = [
   {
-    title: "USF Power BI Ticketing Dashboard",
-    description: "Gave USF IT teams real-time visibility into equipment support work by owner, assignment, status, and resolution. Built end-to-end from data modeling to dashboard delivery — including SQL data prep, Power BI semantic model, SSRS backups, and stakeholder walkthroughs.",
-    tech: ["Power BI", "SQL", "Python", "SSRS", "Snowflake"],
+    title: "TogetherFlow",
+    tagline: "Real-time collaborative task management",
+    problem: "Teams working async lose visibility into blockers, ownership, and status — wasting hours in status meetings and context switching.",
+    solution: "Full-stack web app with real-time collaborative boards, role-based access, and automated notifications. Designed and shipped end-to-end as a solo project.",
+    tech: ["React", "Node.js", "PostgreSQL", "REST APIs", "Tailwind CSS"],
     image: project1Img,
-    github: null as string | null,
+    github: "https://github.com/jayanthu" as string | null,
     demo: null as string | null,
-    note: "Internal enterprise tool — source code is proprietary."
+    note: null as string | null
   },
   {
-    title: "Gilead Sciences ETL Pipeline Platform",
-    description: "Production PySpark pipelines on AWS supporting clinical and marketing analytics for a life sciences company. Included end-to-end reconciliation across 100K+ records/run, SLA monitoring, and failure triage. Built in a 3-engineer team embedded with Gilead's data org.",
-    tech: ["PySpark", "AWS S3", "Glue", "Athena", "Airflow/MWAA", "Redshift"],
+    title: "Photo Organizer",
+    tagline: "AI-assisted personal photo library organizer",
+    problem: "Large personal photo libraries lack intelligent organization — manual tagging is slow and album structures don't scale.",
+    solution: "Local-first photo organizer using computer vision to auto-tag images by scene and subject, generating smart albums and a searchable gallery interface.",
+    tech: ["Python", "OpenCV", "Flask", "React", "SQLite"],
     image: project2Img,
     github: null as string | null,
     demo: null as string | null,
-    note: "Proprietary production system — code is confidential."
+    note: "Personal project — actively in development."
   },
   {
-    title: "Samsung Gesture Recognition Demo",
-    description: "Applied ML prototype for touchless smart TV and gaming control. Replaced remote control actions with camera-based hand gestures, from gesture taxonomy design and dataset collection through model training to an end-to-end Android demo.",
-    tech: ["Python", "OpenCV", "scikit-learn", "pandas", "SciPy", "Android"],
+    title: "USF Dining App",
+    tagline: "Campus dining discovery & menu browsing",
+    problem: "USF students had no mobile-friendly way to check real-time dining hours, menus, and dietary filters across all campus locations.",
+    solution: "Responsive campus dining discovery app aggregating menus, hours, and dietary info with search and filter across all USF dining locations.",
+    tech: ["React", "Python", "Flask", "PostgreSQL", "REST APIs"],
     image: project3Img,
     github: null as string | null,
     demo: null as string | null,
-    note: "Research internship project — source not publicly available."
+    note: "University project — source in private academic repository."
   }
 ];
 
@@ -405,7 +411,7 @@ function ExperienceTimeline() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.35 }}
+              transition={{ type: "spring", stiffness: 220, damping: 28 }}
               className="overflow-hidden"
             >
               <ExpDetailPanel idx={expanded} />
@@ -452,7 +458,7 @@ function ExperienceTimeline() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ type: "spring", stiffness: 220, damping: 28 }}
                       className="overflow-hidden"
                     >
                       <div className="pb-5 pl-4 space-y-3" style={{ marginLeft: "33px", borderLeft: `1px solid ${accent}28` }}>
@@ -509,7 +515,8 @@ function FlipCard({ project, index }: { project: typeof PROJECTS[number]; index:
             </div>
           </div>
           <div className="p-5 flex flex-col flex-1">
-            <h3 className="text-base font-serif font-semibold text-coffee-cream mb-2 leading-snug">{project.title}</h3>
+            <h3 className="text-base font-serif font-semibold text-coffee-cream mb-1 leading-snug">{project.title}</h3>
+            <p className="text-xs font-sans text-coffee-latte/55 italic mb-2.5">{project.tagline}</p>
             <div className="flex flex-wrap gap-1.5 mb-3">
               {project.tech.slice(0, 4).map(t => (
                 <span key={t} className="text-xs font-mono px-2 py-0.5 rounded bg-coffee-bronze/12 text-coffee-latte">{t}</span>
@@ -530,7 +537,7 @@ function FlipCard({ project, index }: { project: typeof PROJECTS[number]; index:
           className="flip-backface-hidden absolute inset-0 rounded-xl border border-coffee-latte/20 bg-coffee-mocha flex flex-col p-5"
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
-          <div className="flex justify-between items-start mb-3">
+          <div className="flex justify-between items-start mb-4">
             <h3 className="text-sm font-serif font-semibold text-coffee-latte leading-snug flex-1 pr-3">{project.title}</h3>
             <button
               onClick={e => { e.stopPropagation(); setFlipped(false); }}
@@ -538,32 +545,43 @@ function FlipCard({ project, index }: { project: typeof PROJECTS[number]; index:
               aria-label="Flip back"
             >✕</button>
           </div>
-          <p className="text-sm font-sans text-coffee-cream/75 leading-relaxed flex-1 overflow-y-auto">{project.description}</p>
-          <div className="mt-3">
-            <p className="text-xs font-mono text-coffee-bronze uppercase tracking-wider mb-2">Tech Stack</p>
-            <div className="flex flex-wrap gap-1.5 mb-3">
-              {project.tech.map(t => (
-                <span key={t} className="text-xs font-mono px-2 py-0.5 rounded bg-coffee-latte/10 text-coffee-latte border border-coffee-latte/15">{t}</span>
-              ))}
+          <div className="flex-1 overflow-y-auto space-y-3 pr-0.5">
+            <div>
+              <p className="text-xs font-mono text-coffee-bronze uppercase tracking-wider mb-1">Problem</p>
+              <p className="text-xs font-sans text-coffee-cream/75 leading-relaxed">{project.problem}</p>
+            </div>
+            <div>
+              <p className="text-xs font-mono text-coffee-bronze uppercase tracking-wider mb-1">Solution</p>
+              <p className="text-xs font-sans text-coffee-cream/75 leading-relaxed">{project.solution}</p>
+            </div>
+            <div>
+              <p className="text-xs font-mono text-coffee-bronze uppercase tracking-wider mb-1.5">Tech Stack</p>
+              <div className="flex flex-wrap gap-1.5">
+                {project.tech.map(t => (
+                  <span key={t} className="text-xs font-mono px-2 py-0.5 rounded bg-coffee-latte/10 text-coffee-latte border border-coffee-latte/15">{t}</span>
+                ))}
+              </div>
             </div>
           </div>
-          {project.note && <p className="text-xs italic font-sans text-coffee-bronze/50 mb-2">{project.note}</p>}
-          {(project.github || project.demo) && (
-            <div className="flex gap-4 mt-1">
-              {project.github && (
-                <a href={project.github!} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
-                  className="flex items-center gap-1.5 text-xs font-sans text-coffee-bronze hover:text-coffee-latte transition-colors">
-                  <Github size={12} /> Code
-                </a>
-              )}
-              {project.demo && (
-                <a href={project.demo!} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
-                  className="flex items-center gap-1.5 text-xs font-sans text-coffee-bronze hover:text-coffee-latte transition-colors">
-                  <ExternalLink size={12} /> Demo
-                </a>
-              )}
-            </div>
-          )}
+          <div className="mt-3 flex items-center justify-between flex-shrink-0">
+            {project.note && <p className="text-xs italic font-sans text-coffee-bronze/50 leading-snug">{project.note}</p>}
+            {(project.github || project.demo) && (
+              <div className="flex gap-4 ml-auto">
+                {project.github && (
+                  <a href={project.github} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
+                    className="flex items-center gap-1.5 text-xs font-sans text-coffee-bronze hover:text-coffee-latte transition-colors">
+                    <Github size={12} /> GitHub
+                  </a>
+                )}
+                {project.demo && (
+                  <a href={project.demo} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
+                    className="flex items-center gap-1.5 text-xs font-sans text-coffee-bronze hover:text-coffee-latte transition-colors">
+                    <ExternalLink size={12} /> Demo
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -634,7 +652,7 @@ function EducationCard({ edu }: { edu: typeof EDUCATION[number] }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28 }}
+            transition={{ type: "spring", stiffness: 220, damping: 28 }}
             className="overflow-hidden"
           >
             <div className="border-t border-coffee-bronze/15 px-5 pb-5 pt-4 space-y-3">
