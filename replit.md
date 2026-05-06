@@ -40,7 +40,7 @@ Interactive personal portfolio website for Jayanth Uppara (Product Engineer / Fu
 - **Hero**: Two-column (text left, animated coffee cup illustration right); CoffeeMugLetter SVG replaces the "J"; rotating speech bubble taglines; 4 CTA buttons (View Projects, Resume ↓, GitHub, LinkedIn)
 - **Experience**: Vertical timeline — FTB, USF, Cognizant, Samsung; click to expand; colored dot per company
 - **Projects**: 3D flip cards (click to flip); front shows image/title; back shows description, full tech stack, links
-- **Skills**: 6 categories (Backend, Frontend, Cloud, Databases, BI & Analytics, AI Tools); hover-lift chips
+- **Skills**: 9 categories (Backend, Frontend, Cloud, Data Engineering, Databases, BI & Analytics, AI & Copilot Tools, Languages, Soft Skills); hover-lift chips
 - **Education**: Expandable cards (click ▾ to reveal coursework + narrative); AnimatePresence height animation
 - **Certifications**: Stamp/spring badges (AWS, PL-300); scale+rotate spring on scroll-into-view
 - **Contact**: mailto, LinkedIn, GitHub, resume download
