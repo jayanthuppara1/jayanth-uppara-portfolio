@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, Linkedin, Mail, ExternalLink, Terminal, Database, Cloud, FileCode2, MapPin, Phone, Download, Star, Award } from "lucide-react";
+import { Github, Linkedin, Mail, ExternalLink, Terminal, Database, Cloud, FileCode2, MapPin, Phone, Download, Star, Award, Layers, Users } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
 import HeroParticles from "@/components/HeroParticles";
 import CoffeeMugLetter from "@/components/CoffeeMugLetter";
@@ -211,18 +211,23 @@ const CERTS = [
 const SKILL_CATEGORIES = [
   {
     title: "Backend & APIs",
-    icon: <FileCode2 size={18} />,
+    icon: <Terminal size={18} />,
     skills: ["Python", "Flask", "FastAPI", "Node.js", "REST APIs", "C#/.NET MVC", "Automation", "Service Logic"]
   },
   {
     title: "Frontend",
-    icon: <ExternalLink size={18} />,
+    icon: <FileCode2 size={18} />,
     skills: ["React", "JavaScript", "TypeScript", "HTML/CSS", "Tailwind CSS", "Vite", "Responsive Design"]
   },
   {
-    title: "Cloud & Data Engineering",
+    title: "Cloud",
     icon: <Cloud size={18} />,
-    skills: ["AWS S3", "Glue", "Athena", "Redshift", "Lambda", "Airflow/MWAA", "PySpark", "Snowflake", "ETL/ELT"]
+    skills: ["AWS S3", "Glue", "Athena", "Redshift", "Lambda", "Airflow/MWAA", "Snowflake (Cloud)", "IAM", "CloudWatch"]
+  },
+  {
+    title: "Data Engineering",
+    icon: <Layers size={18} />,
+    skills: ["PySpark", "ETL/ELT", "Data Pipelines", "Data Modeling", "pandas", "Data Validation", "Reconciliation"]
   },
   {
     title: "Databases",
@@ -232,12 +237,22 @@ const SKILL_CATEGORIES = [
   {
     title: "BI & Analytics",
     icon: <Star size={18} />,
-    skills: ["Power BI", "SSRS", "Tableau", "Excel", "Power Query", "DAX", "Data Modeling"]
+    skills: ["Power BI", "SSRS", "Tableau", "Excel", "Power Query", "DAX", "Data Visualization"]
   },
   {
     title: "AI & Copilot Tools",
-    icon: <Terminal size={18} />,
+    icon: <Award size={18} />,
     skills: ["Claude", "ChatGPT", "GitHub Copilot", "Replit AI", "Cursor", "Lovable", "Prompt Engineering"]
+  },
+  {
+    title: "Languages",
+    icon: <ExternalLink size={18} />,
+    skills: ["Python", "SQL / T-SQL", "JavaScript", "TypeScript", "C#", "Shell/Bash", "PySpark"]
+  },
+  {
+    title: "Soft Skills",
+    icon: <Users size={18} />,
+    skills: ["Stakeholder Communication", "End-to-end Ownership", "Technical Documentation", "Agile/Scrum", "Cross-functional Collaboration", "Product Thinking"]
   }
 ];
 
@@ -296,84 +311,175 @@ const EXPERIENCE_JOBS = [
   }
 ];
 
-/* ─── Experience vertical timeline ─── */
+/* ─── Experience timeline (horizontal desktop / vertical mobile) ─── */
 const EXP_ACCENT = ["#c9a97a", "#a0622a", "#c27a3a", "#8b5523"];
+
+function ExpDetailPanel({ idx }: { idx: number }) {
+  const job = EXPERIENCE_JOBS[idx];
+  const accent = EXP_ACCENT[idx % EXP_ACCENT.length];
+  return (
+    <div
+      className="rounded-xl border p-5 mt-5"
+      style={{ borderColor: `${accent}30`, background: `${accent}08` }}
+    >
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-2">
+        <div>
+          <h3 className="font-serif font-semibold text-coffee-foam">{job.company}</h3>
+          <p className="text-sm font-sans mt-0.5" style={{ color: accent }}>{job.role}</p>
+        </div>
+        <div className="text-xs font-mono text-coffee-bronze sm:text-right flex-shrink-0">
+          <div>{job.date}</div>
+          <div className="opacity-70">{job.location}</div>
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-1.5 mb-4">
+        {job.tech.map(t => (
+          <span
+            key={t}
+            className="text-xs font-mono px-2.5 py-1 rounded-md border text-coffee-latte"
+            style={{ background: `${accent}12`, borderColor: `${accent}30` }}
+          >{t}</span>
+        ))}
+      </div>
+      <ul className="space-y-2.5">
+        {job.bullets.map((b, j) => (
+          <li key={j} className="flex gap-3 text-sm font-sans text-coffee-latte/70 leading-relaxed">
+            <span className="flex-shrink-0 mt-1" style={{ color: accent }}>▹</span>
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 function ExperienceTimeline() {
   const [expanded, setExpanded] = React.useState<number | null>(0);
+
   return (
-    <div className="relative">
-      <div
-        className="absolute top-4 bottom-4"
-        style={{ left: "15px", width: "1px", background: "linear-gradient(to bottom, transparent, rgba(160,98,42,0.35) 10%, rgba(160,98,42,0.35) 90%, transparent)" }}
-      />
-      <div className="space-y-1">
-        {EXPERIENCE_JOBS.map((job, i) => {
-          const accent = EXP_ACCENT[i % EXP_ACCENT.length];
-          const isOpen = expanded === i;
-          return (
-            <div key={i}>
-              <button
-                onClick={() => setExpanded(isOpen ? null : i)}
-                className="w-full text-left flex gap-5 group py-3 relative"
-              >
-                <div
-                  className="relative z-10 flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center mt-0.5 transition-all duration-300"
-                  style={{ borderColor: accent, background: isOpen ? `${accent}28` : "rgba(26,14,8,0.9)" }}
+    <>
+      {/* ── Desktop: horizontal timeline ── */}
+      <div className="hidden md:block">
+        <div className="relative">
+          {/* Horizontal connecting line */}
+          <div
+            className="absolute left-[2rem] right-[2rem] top-[15px] h-px"
+            style={{ background: "linear-gradient(to right, transparent, rgba(160,98,42,0.4) 12%, rgba(160,98,42,0.4) 88%, transparent)" }}
+          />
+          {/* Dots row */}
+          <div className="flex">
+            {EXPERIENCE_JOBS.map((job, i) => {
+              const accent = EXP_ACCENT[i % EXP_ACCENT.length];
+              const isOpen = expanded === i;
+              return (
+                <button
+                  key={i}
+                  onClick={() => setExpanded(isOpen ? null : i)}
+                  className="flex-1 flex flex-col items-center gap-3 group text-center px-3"
                 >
                   <div
-                    className="w-2 h-2 rounded-full transition-transform duration-200"
-                    style={{ background: accent, transform: isOpen ? "scale(1.35)" : "scale(1)" }}
-                  />
-                </div>
-                <div className="flex-1 flex flex-col md:flex-row md:items-start md:justify-between min-w-0 gap-1 md:gap-4">
-                  <div className="min-w-0">
+                    className="relative z-10 w-8 h-8 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-300"
+                    style={{ borderColor: accent, background: isOpen ? `${accent}30` : "rgba(26,14,8,0.9)" }}
+                  >
+                    <div
+                      className="w-2 h-2 rounded-full transition-transform duration-200"
+                      style={{ background: accent, transform: isOpen ? "scale(1.35)" : "scale(1)" }}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-xs font-serif font-semibold text-coffee-foam group-hover:text-coffee-latte transition-colors leading-tight">{job.company}</p>
+                    <p className="text-xs font-sans mt-0.5 leading-tight" style={{ color: accent }}>{job.role}</p>
+                    <p className="text-xs font-mono text-coffee-bronze/55 mt-1">{job.date.split("–")[0].trim()}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Detail panel below */}
+        <AnimatePresence>
+          {expanded !== null && (
+            <motion.div
+              key={`exp-desktop-${expanded}`}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              className="overflow-hidden"
+            >
+              <ExpDetailPanel idx={expanded} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* ── Mobile: vertical timeline ── */}
+      <div className="md:hidden relative">
+        <div
+          className="absolute top-4 bottom-4"
+          style={{ left: "15px", width: "1px", background: "linear-gradient(to bottom, transparent, rgba(160,98,42,0.35) 10%, rgba(160,98,42,0.35) 90%, transparent)" }}
+        />
+        <div className="space-y-1">
+          {EXPERIENCE_JOBS.map((job, i) => {
+            const accent = EXP_ACCENT[i % EXP_ACCENT.length];
+            const isOpen = expanded === i;
+            return (
+              <div key={i}>
+                <button
+                  onClick={() => setExpanded(isOpen ? null : i)}
+                  className="w-full text-left flex gap-5 group py-3"
+                >
+                  <div
+                    className="relative z-10 flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center mt-0.5 transition-all duration-300"
+                    style={{ borderColor: accent, background: isOpen ? `${accent}28` : "rgba(26,14,8,0.9)" }}
+                  >
+                    <div
+                      className="w-2 h-2 rounded-full transition-transform duration-200"
+                      style={{ background: accent, transform: isOpen ? "scale(1.35)" : "scale(1)" }}
+                    />
+                  </div>
+                  <div className="flex-1 flex flex-col gap-0.5 min-w-0">
                     <h3 className="text-base font-serif font-semibold text-coffee-foam group-hover:text-coffee-latte transition-colors">{job.company}</h3>
                     <p className="text-sm font-sans" style={{ color: accent }}>{job.role}</p>
+                    <p className="text-xs font-mono text-coffee-bronze/70">{job.date} · {job.location}</p>
                   </div>
-                  <div className="text-xs font-mono text-coffee-bronze flex-shrink-0 text-left md:text-right">
-                    <div>{job.date}</div>
-                    <div className="opacity-70">{job.location}</div>
-                  </div>
-                </div>
-              </button>
-              <AnimatePresence>
-                {isOpen && (
-                  <motion.div
-                    key={`exp-${i}`}
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.32 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="pb-4 pl-4" style={{ marginLeft: "33px", borderLeft: `1px solid ${accent}28` }}>
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {job.tech.map(t => (
-                          <span
-                            key={t}
-                            className="text-xs font-mono px-2.5 py-1 rounded-md border text-coffee-latte"
-                            style={{ background: `${accent}12`, borderColor: `${accent}30` }}
-                          >{t}</span>
-                        ))}
+                </button>
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      key={`exp-mob-${i}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pb-5 pl-4 space-y-3" style={{ marginLeft: "33px", borderLeft: `1px solid ${accent}28` }}>
+                        <div className="flex flex-wrap gap-1.5">
+                          {job.tech.map(t => (
+                            <span key={t} className="text-xs font-mono px-2.5 py-1 rounded-md border text-coffee-latte"
+                              style={{ background: `${accent}12`, borderColor: `${accent}30` }}>{t}</span>
+                          ))}
+                        </div>
+                        <ul className="space-y-2.5">
+                          {job.bullets.map((b, j) => (
+                            <li key={j} className="flex gap-3 text-sm font-sans text-coffee-latte/70 leading-relaxed">
+                              <span className="flex-shrink-0 mt-1" style={{ color: accent }}>▹</span>
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                      <ul className="space-y-2.5">
-                        {job.bullets.map((b, j) => (
-                          <li key={j} className="flex gap-3 text-sm font-sans text-coffee-latte/70 leading-relaxed">
-                            <span className="flex-shrink-0 mt-1" style={{ color: accent }}>▹</span>
-                            <span>{b}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -386,13 +492,14 @@ function FlipCard({ project, index }: { project: typeof PROJECTS[number]; index:
         onClick={() => setFlipped(f => !f)}
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ duration: 0.65, ease: [0.4, 0, 0.2, 1] }}
-        style={{ transformStyle: "preserve-3d", WebkitTransformStyle: "preserve-3d" as any, position: "relative", width: "100%", height: "100%", cursor: "pointer" }}
+        style={{ transformStyle: "preserve-3d", position: "relative", width: "100%", height: "100%", cursor: "pointer" }}
+        className="flip-preserve-3d"
         whileHover={!flipped ? { scale: 1.012 } : undefined}
       >
         {/* Front */}
         <div
-          className="absolute inset-0 rounded-xl overflow-hidden border border-coffee-bronze/20 bg-coffee-espresso/65 flex flex-col"
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" as any }}
+          className="flip-backface-hidden absolute inset-0 rounded-xl overflow-hidden border border-coffee-bronze/20 bg-coffee-espresso/65 flex flex-col"
+          style={{ backfaceVisibility: "hidden" }}
         >
           <div className="h-44 overflow-hidden relative flex-shrink-0">
             <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
@@ -420,8 +527,8 @@ function FlipCard({ project, index }: { project: typeof PROJECTS[number]; index:
 
         {/* Back */}
         <div
-          className="absolute inset-0 rounded-xl border border-coffee-latte/20 bg-coffee-mocha flex flex-col p-5"
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" as any, transform: "rotateY(180deg)" }}
+          className="flip-backface-hidden absolute inset-0 rounded-xl border border-coffee-latte/20 bg-coffee-mocha flex flex-col p-5"
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
           <div className="flex justify-between items-start mb-3">
             <h3 className="text-sm font-serif font-semibold text-coffee-latte leading-snug flex-1 pr-3">{project.title}</h3>

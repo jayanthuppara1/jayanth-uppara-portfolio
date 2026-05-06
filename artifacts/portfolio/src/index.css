@@ -257,6 +257,14 @@
   animation: coffee-bob 3.6s ease-in-out infinite;
 }
 
+/* ── Flip card 3D (vendor prefix via class, avoids TS any-cast) ── */
+.flip-preserve-3d {
+  -webkit-transform-style: preserve-3d;
+}
+.flip-backface-hidden {
+  -webkit-backface-visibility: hidden;
+}
+
 /* ── Speech bubble tail ── */
 .speech-bubble-tail::after {
   content: "";
