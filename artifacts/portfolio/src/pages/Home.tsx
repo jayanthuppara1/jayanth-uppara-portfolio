@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Github, Linkedin, Mail, ExternalLink, Terminal, Database, Cloud, FileCode2, MapPin, Phone, Download, Star, Award } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import CustomCursor from "@/components/CustomCursor";
@@ -79,8 +79,6 @@ function MetricCard({
 }
 
 export default function Home() {
-  const { scrollYProgress } = useScroll();
-  const _y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
   const [activeTitleIndex, setActiveTitleIndex] = useState(0);
   const titles = [

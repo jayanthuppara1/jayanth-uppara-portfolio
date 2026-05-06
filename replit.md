@@ -19,7 +19,7 @@ Interactive personal portfolio website presenting Jayanth Uppara as a Product En
 ## Where things live
 
 - `artifacts/portfolio/src/pages/Home.tsx` — entire portfolio UI (all 7 sections)
-- `artifacts/portfolio/src/index.css` — theme (dark mode, cyan primary accent)
+- `artifacts/portfolio/src/index.css` — theme source of truth: CSS `@theme inline` block defines all semantic tokens (--background, --primary, etc.) AND coffee palette tokens (--color-coffee-latte, --color-coffee-bronze, etc.) usable as Tailwind utilities (text-coffee-latte, bg-coffee-bronze, etc.). No tailwind.config.ts needed — Tailwind v4 reads @theme from CSS.
 - `artifacts/portfolio/src/assets/` — AI-generated project card images
 - `artifacts/portfolio/vite.config.ts` — Vite config with `@assets` alias and framer-motion dedupe
 - `artifacts/api-server/src/` — Express API server (health endpoint only)
