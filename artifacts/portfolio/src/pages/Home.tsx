@@ -251,19 +251,28 @@ export default function Home() {
                   title: "USF Power BI Ticketing Dashboard",
                   description: "Gave USF IT teams real-time visibility into equipment support work by owner, assignment, status, and resolution. Built end-to-end from data modeling to dashboard delivery.",
                   tech: ["Power BI", "SQL", "Python", "SSRS", "Snowflake"],
-                  image: project1Img
+                  image: project1Img,
+                  github: null,
+                  demo: null,
+                  note: "Internal enterprise tool — source code is proprietary."
                 },
                 {
                   title: "Gilead Sciences ETL Pipeline Platform",
                   description: "Production PySpark pipelines on AWS supporting clinical and marketing analytics for a life sciences company. Included reconciliation across 100K+ records/run.",
                   tech: ["PySpark", "AWS S3", "Glue", "Athena", "Airflow"],
-                  image: project2Img
+                  image: project2Img,
+                  github: null,
+                  demo: null,
+                  note: "Proprietary production system — code is confidential."
                 },
                 {
                   title: "Samsung Gesture Recognition Demo",
                   description: "Applied ML prototype for touchless smart TV and gaming control. Replaced remote control actions with camera-based hand gestures, deployed as an Android demo.",
                   tech: ["Python", "OpenCV", "scikit-learn", "Android"],
-                  image: project3Img
+                  image: project3Img,
+                  github: null,
+                  demo: null,
+                  note: "Research internship project — source not publicly available."
                 }
               ].map((project, i) => (
                 <motion.div key={i} variants={STAGGER_CHILDREN} className="h-full">
@@ -278,26 +287,34 @@ export default function Home() {
                     </div>
                     <div className="p-6 flex flex-col flex-grow">
                       <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">{project.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-grow">{project.description}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-grow">{project.description}</p>
                       
                       <div className="mt-auto">
-                        <div className="flex flex-wrap gap-2 mb-6">
+                        <div className="flex flex-wrap gap-2 mb-4">
                           {project.tech.map(t => (
                             <span key={t} className="text-xs font-mono text-primary/80 bg-primary/10 px-2 py-1 rounded">{t}</span>
                           ))}
                         </div>
-                        <div className="flex gap-4">
-                          <Button variant="ghost" size="sm" className="gap-2 border-border/50 text-muted-foreground hover:text-foreground" asChild>
-                            <a href="https://github.com/jayanthu" target="_blank" rel="noopener noreferrer">
-                              <Github size={16} /> Code
-                            </a>
-                          </Button>
-                          <Button variant="ghost" size="sm" className="gap-2 border-border/50 text-muted-foreground hover:text-foreground" asChild>
-                            <a href="#" target="_blank" rel="noopener noreferrer">
-                              <ExternalLink size={16} /> Live Demo
-                            </a>
-                          </Button>
-                        </div>
+                        {(project.github || project.demo) ? (
+                          <div className="flex gap-4">
+                            {project.github && (
+                              <Button variant="ghost" size="sm" className="gap-2 border-border/50 text-muted-foreground hover:text-foreground" asChild>
+                                <a href={project.github} target="_blank" rel="noopener noreferrer">
+                                  <Github size={16} /> Code
+                                </a>
+                              </Button>
+                            )}
+                            {project.demo && (
+                              <Button variant="ghost" size="sm" className="gap-2 border-border/50 text-muted-foreground hover:text-foreground" asChild>
+                                <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                                  <ExternalLink size={16} /> Live Demo
+                                </a>
+                              </Button>
+                            )}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-muted-foreground/60 italic">{project.note}</p>
+                        )}
                       </div>
                     </div>
                   </Card>
