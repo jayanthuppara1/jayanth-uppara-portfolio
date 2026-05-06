@@ -1,13 +1,0 @@
-I want to build a modern, impressive, interactive personal portfolio website that presents me as a strong Product Engineer / Full-Stack Product Engineer, not just a basic resume page.
-The website should feel premium, clean, developer-focused, and highly polished. I do not want a simple static one-page portfolio. I want it to feel like a real interactive product with thoughtful design, smooth navigation, modern colors, animations, and a strong visual identity.
-The portfolio should include separate sections for:
-1. About Me / Hero Section Introduce me as Jayanth Uppara, a Product Engineer with backend, full-stack, data engineering, cloud, AI-assisted development, and healthcare/government experience. The first impression should be strong and professional.
-2. Experience Show my work history in an interactive way, not just plain text. Each company should have a card or visual block. When clicked, it should expand or open a detailed view showing my role, technologies, responsibilities, and impact.
-3. Projects Projects should be a major highlight. Each project should have its own interactive card with screenshots/placeholders, tech stack, live links, GitHub links, and a short explanation of the problem solved. Projects should look like real products, not school assignments.
-4. Education Make this visually engaging. For example, use university cards, campus-style visuals, or clickable education tiles. When someone clicks on a school, they should see degree details, dates, and relevant coursework or achievements.
-5. Certifications Display certifications cleanly using badges or cards, especially AWS Certified Solutions Architect and Microsoft Power BI Data Analyst.
-6. Skills / Tech Stack Organize skills by category: Backend, Frontend, Cloud, Data Engineering, AI Tools, Databases, BI, and Languages. Use modern icons or clean visual tags.
-7. Contact Section Include LinkedIn, GitHub, email, phone, resume download, and a clear call-to-action.
-The design should be fully responsive for desktop, tablet, and mobile, but the desktop version should feel like a proper professional website, not just a stretched mobile layout. Use modern UI practices: clean spacing, strong typography, subtle animations, hover effects, cards, modals, timeline views, and smooth scrolling.
-The goal is to make recruiters feel like they are exploring a well-built product, not reading a plain resume. Please make the portfolio visually impressive, easy to navigate, ATS/recruiter-friendly, and suitable for product engineering, full-stack, backend, AI, and cloud roles.
-  Coursera : https://www.coursera.org/accomplishments 
