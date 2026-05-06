@@ -4,19 +4,32 @@ import { Github, Linkedin, Mail, ExternalLink, Terminal, Database, Cloud, FileCo
 import CustomCursor from "@/components/CustomCursor";
 import HeroParticles from "@/components/HeroParticles";
 import SteamDeco from "@/components/SteamDeco";
+import SectionTransition from "@/components/SectionTransition";
 
 import project1Img from "../assets/project-1.png";
 import project2Img from "../assets/project-2.png";
 import project3Img from "../assets/project-3.png";
 
+const EASE_OUT_EXPO = [0.25, 0.46, 0.45, 0.94] as [number, number, number, number];
+
 const STAGGER_CHILDREN = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55 } }
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE_OUT_EXPO } }
 };
 
 const STAGGER_CONTAINER = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  visible: { opacity: 1, transition: { staggerChildren: 0.11 } }
+};
+
+const HEADING_CHILD = {
+  hidden: { opacity: 0, y: 36, filter: "blur(8px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.75, ease: EASE_OUT_EXPO }
+  }
 };
 
 /* ─── Speech bubble with rotating taglines ─── */
@@ -1049,7 +1062,7 @@ export default function Home() {
 
       {/* ── Metrics Snapshot ── */}
       <section className="py-20 relative">
-        <div className="coffee-divider mb-20" />
+        <SectionTransition className="mb-20" glow />
         <div className="max-w-5xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -1070,7 +1083,7 @@ export default function Home() {
             <MetricCard label="Cloud + AI + Data" value={100} suffix="%" icon={<Database size={18} />} delay={0.35} />
           </div>
         </div>
-        <div className="coffee-divider mt-20" />
+        <SectionTransition className="mt-20" />
       </section>
 
       {/* ── Experience ── */}
@@ -1082,7 +1095,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-100px" }}
             variants={STAGGER_CONTAINER}
           >
-            <motion.h2 variants={STAGGER_CHILDREN} className="text-3xl font-serif font-bold text-coffee-foam mb-10 flex items-center gap-3">
+            <motion.h2 variants={HEADING_CHILD} className="text-3xl font-serif font-bold text-coffee-foam mb-10 flex items-center gap-3">
               <SteamDeco />
               <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">01.</span> Experience
             </motion.h2>
@@ -1096,7 +1109,7 @@ export default function Home() {
 
       {/* ── Projects ── */}
       <section id="projects" className="py-24 relative bg-coffee-dark/40">
-        <div className="coffee-divider" />
+        <SectionTransition glow />
         <div className="max-w-6xl mx-auto px-6 pt-12">
           <motion.div
             initial="hidden"
@@ -1104,7 +1117,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-100px" }}
             variants={STAGGER_CONTAINER}
           >
-            <motion.h2 variants={STAGGER_CHILDREN} className="text-3xl font-serif font-bold text-coffee-foam mb-12 flex items-center gap-3">
+            <motion.h2 variants={HEADING_CHILD} className="text-3xl font-serif font-bold text-coffee-foam mb-12 flex items-center gap-3">
               <SteamDeco />
               <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">02.</span> Selected Projects
             </motion.h2>
@@ -1116,7 +1129,7 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
-        <div className="coffee-divider mt-12" />
+        <SectionTransition className="mt-12" />
       </section>
 
       {/* ── Skills ── */}
@@ -1128,7 +1141,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-100px" }}
             variants={STAGGER_CONTAINER}
           >
-            <motion.h2 variants={STAGGER_CHILDREN} className="text-3xl font-serif font-bold text-coffee-foam mb-12 flex items-center gap-3">
+            <motion.h2 variants={HEADING_CHILD} className="text-3xl font-serif font-bold text-coffee-foam mb-12 flex items-center gap-3">
               <SteamDeco />
               <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">03.</span> Technical Stack
             </motion.h2>
@@ -1166,7 +1179,7 @@ export default function Home() {
 
       {/* ── Education & Certs ── */}
       <section className="py-24 relative bg-coffee-dark/50">
-        <div className="coffee-divider" />
+        <SectionTransition glow />
         <div className="max-w-4xl mx-auto px-6 pt-12">
           <motion.div
             initial="hidden"
@@ -1176,7 +1189,7 @@ export default function Home() {
             className="grid grid-cols-1 lg:grid-cols-2 gap-12"
           >
             <div>
-              <motion.h2 variants={STAGGER_CHILDREN} className="text-2xl font-serif font-bold text-coffee-foam mb-8 flex items-center gap-3">
+              <motion.h2 variants={HEADING_CHILD} className="text-2xl font-serif font-bold text-coffee-foam mb-8 flex items-center gap-3">
                 <SteamDeco />
                 <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">04.</span> Education
               </motion.h2>
@@ -1188,7 +1201,7 @@ export default function Home() {
             </div>
 
             <div>
-              <motion.h2 variants={STAGGER_CHILDREN} className="text-2xl font-serif font-bold text-coffee-foam mb-8 flex items-center gap-3">
+              <motion.h2 variants={HEADING_CHILD} className="text-2xl font-serif font-bold text-coffee-foam mb-8 flex items-center gap-3">
                 <SteamDeco />
                 <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">05.</span> Certifications
               </motion.h2>
@@ -1200,7 +1213,7 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
-        <div className="coffee-divider mt-12" />
+        <SectionTransition className="mt-12" />
       </section>
 
       {/* ── Contact ── */}
@@ -1215,7 +1228,7 @@ export default function Home() {
             <motion.p variants={STAGGER_CHILDREN} className="font-mono text-xs tracking-[0.2em] uppercase text-coffee-bronze mb-4">
               06. What's Next?
             </motion.p>
-            <motion.h2 variants={STAGGER_CHILDREN} className="text-4xl md:text-5xl font-serif font-bold text-coffee-foam mb-6">
+            <motion.h2 variants={HEADING_CHILD} className="text-4xl md:text-5xl font-serif font-bold text-coffee-foam mb-6">
               Let's Build Something Together
             </motion.h2>
             <motion.p variants={STAGGER_CHILDREN} className="text-base leading-relaxed mb-12 font-sans text-coffee-latte/70">
