@@ -458,7 +458,7 @@ export default function Home() {
                 </a>
               </Button>
               <Button size="lg" variant="outline" className="px-8 text-md h-12 w-full sm:w-auto border-border" asChild>
-                <a href="#" className="flex items-center">
+                <a href="/JayanthUppara_Resume.pdf" download="JayanthUppara_Resume.pdf" className="flex items-center">
                   <Download className="mr-2" size={18} /> Download Resume
                 </a>
               </Button>
