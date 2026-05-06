@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, Linkedin, Mail, ExternalLink, Terminal, Database, Cloud, FileCode2, MapPin, Phone, Download, Star, Award } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import CustomCursor from "@/components/CustomCursor";
 import HeroParticles from "@/components/HeroParticles";
 import CoffeeMugLetter from "@/components/CoffeeMugLetter";
+import SteamDeco from "@/components/SteamDeco";
 
 import project1Img from "../assets/project-1.png";
 import project2Img from "../assets/project-2.png";
@@ -139,6 +139,412 @@ function AnimatedCoffeeCup() {
         </text>
       </svg>
     </div>
+  );
+}
+
+/* ─── Static data ─── */
+
+const PROJECTS = [
+  {
+    title: "USF Power BI Ticketing Dashboard",
+    description: "Gave USF IT teams real-time visibility into equipment support work by owner, assignment, status, and resolution. Built end-to-end from data modeling to dashboard delivery — including SQL data prep, Power BI semantic model, SSRS backups, and stakeholder walkthroughs.",
+    tech: ["Power BI", "SQL", "Python", "SSRS", "Snowflake"],
+    image: project1Img,
+    github: null as string | null,
+    demo: null as string | null,
+    note: "Internal enterprise tool — source code is proprietary."
+  },
+  {
+    title: "Gilead Sciences ETL Pipeline Platform",
+    description: "Production PySpark pipelines on AWS supporting clinical and marketing analytics for a life sciences company. Included end-to-end reconciliation across 100K+ records/run, SLA monitoring, and failure triage. Built in a 3-engineer team embedded with Gilead's data org.",
+    tech: ["PySpark", "AWS S3", "Glue", "Athena", "Airflow/MWAA", "Redshift"],
+    image: project2Img,
+    github: null as string | null,
+    demo: null as string | null,
+    note: "Proprietary production system — code is confidential."
+  },
+  {
+    title: "Samsung Gesture Recognition Demo",
+    description: "Applied ML prototype for touchless smart TV and gaming control. Replaced remote control actions with camera-based hand gestures, from gesture taxonomy design and dataset collection through model training to an end-to-end Android demo.",
+    tech: ["Python", "OpenCV", "scikit-learn", "pandas", "SciPy", "Android"],
+    image: project3Img,
+    github: null as string | null,
+    demo: null as string | null,
+    note: "Research internship project — source not publicly available."
+  }
+];
+
+const EDUCATION = [
+  {
+    degree: "M.S., Business Analytics & Information Systems",
+    school: "University of South Florida",
+    location: "Tampa, FL",
+    date: "May 2025",
+    coursework: ["Data Mining", "Business Intelligence", "Cloud Computing", "Machine Learning", "Data Visualization", "Database Management", "Applied Analytics"],
+    narrative: "A bridge year that transformed an engineering background into product and data fluency — learning to speak both the language of data and the language of business."
+  },
+  {
+    degree: "B.Tech, Electronics & Communication Engineering",
+    school: "Karunya University",
+    location: "Coimbatore, India",
+    date: "May 2022",
+    coursework: ["Digital Signal Processing", "Data Structures & Algorithms", "Embedded Systems", "Communication Networks", "Linear Algebra", "Probability & Statistics"],
+    narrative: "Where systems thinking took root — building the analytical foundation that later translated directly into data engineering and backend work."
+  }
+];
+
+const CERTS = [
+  {
+    title: "AWS Certified Solutions Architect – Associate",
+    provider: "Amazon Web Services",
+    year: "2023",
+    icon: "AWS"
+  },
+  {
+    title: "Microsoft PL-300 Power BI Data Analyst",
+    provider: "Microsoft",
+    year: "2024",
+    icon: "PBI"
+  }
+];
+
+const SKILL_CATEGORIES = [
+  {
+    title: "Backend & APIs",
+    icon: <FileCode2 size={18} />,
+    skills: ["Python", "Flask", "FastAPI", "Node.js", "REST APIs", "C#/.NET MVC", "Automation", "Service Logic"]
+  },
+  {
+    title: "Frontend",
+    icon: <ExternalLink size={18} />,
+    skills: ["React", "JavaScript", "TypeScript", "HTML/CSS", "Tailwind CSS", "Vite", "Responsive Design"]
+  },
+  {
+    title: "Cloud & Data Engineering",
+    icon: <Cloud size={18} />,
+    skills: ["AWS S3", "Glue", "Athena", "Redshift", "Lambda", "Airflow/MWAA", "PySpark", "Snowflake", "ETL/ELT"]
+  },
+  {
+    title: "Databases",
+    icon: <Database size={18} />,
+    skills: ["SQL Server", "PostgreSQL", "Snowflake", "Teradata", "T-SQL", "MySQL", "Query Optimization"]
+  },
+  {
+    title: "BI & Analytics",
+    icon: <Star size={18} />,
+    skills: ["Power BI", "SSRS", "Tableau", "Excel", "Power Query", "DAX", "Data Modeling"]
+  },
+  {
+    title: "AI & Copilot Tools",
+    icon: <Terminal size={18} />,
+    skills: ["Claude", "ChatGPT", "GitHub Copilot", "Replit AI", "Cursor", "Lovable", "Prompt Engineering"]
+  }
+];
+
+const EXPERIENCE_JOBS = [
+  {
+    company: "Franchise Tax Board",
+    role: "IT Associate",
+    date: "Jan 2026 – Present",
+    location: "Sacramento, CA",
+    tech: ["Python", "Flask", "FastAPI", "SQL Server", "T-SQL", "REST APIs", "Automation"],
+    bullets: [
+      "Built internal backend services and workflow automation for regulated tax operations",
+      "Owned features across the full product lifecycle — from analyst pain points to deployment",
+      "Developed SQL-driven application logic using complex T-SQL, CTEs, window functions, and KPI rules across large state tax datasets",
+      "Automated recurring weekly, monthly, and annual processes, reducing manual handoffs for audit, compliance, and operational teams"
+    ]
+  },
+  {
+    company: "University of South Florida",
+    role: "BI Engineer Intern",
+    date: "Oct 2023 – May 2025",
+    location: "Tampa, FL",
+    tech: ["Power BI", "SSRS", "Snowflake", "Python", "SQL", "Excel"],
+    bullets: [
+      "Owned end-to-end development of a Power BI ticketing product for USF IT",
+      "Built self-service finance reporting for 3–5 campus units using SSRS, Power BI, SQL, Python, Snowflake, and Excel",
+      "Cleaned, joined, and modeled operational datasets to improve reporting accuracy",
+      "Worked directly with Finance and IT stakeholders on usability and metric documentation"
+    ]
+  },
+  {
+    company: "Cognizant Technology Solutions",
+    role: "Data Engineer (Gilead Sciences)",
+    date: "Jan 2022 – Jul 2023",
+    location: "Chennai, India",
+    tech: ["PySpark", "AWS", "Glue", "Athena", "Redshift", "Airflow/MWAA", "ETL"],
+    bullets: [
+      "Engineered production PySpark ETL pipelines on AWS for Gilead Sciences clinical and marketing analytics",
+      "Owned reliability for SLA-bound pipelines — monitoring, failure triage, debugging, overnight on-call support",
+      "Built new pipelines and hardened inherited systems in a 3-engineer team",
+      "Implemented reconciliation and validation checks across ~100K records/run for regulated life sciences data delivery"
+    ]
+  },
+  {
+    company: "Samsung R&D Institute",
+    role: "Research Intern — Gesture Recognition",
+    date: "Apr 2021 – Dec 2021",
+    location: "Bengaluru, India",
+    tech: ["Python", "OpenCV", "pandas", "SciPy", "scikit-learn", "Android"],
+    bullets: [
+      "Built an ML prototype for touchless smart TV control and gaming using camera-based hand gestures",
+      "Designed gesture taxonomies that balanced recognition accuracy with natural user movement",
+      "Created a labeled gesture dataset from thousands of motion sequences",
+      "Trained and integrated ML models into an Android demo showing end-to-end product thinking"
+    ]
+  }
+];
+
+/* ─── Experience vertical timeline ─── */
+const EXP_ACCENT = ["#c9a97a", "#a0622a", "#c27a3a", "#8b5523"];
+
+function ExperienceTimeline() {
+  const [expanded, setExpanded] = React.useState<number | null>(0);
+  return (
+    <div className="relative">
+      <div
+        className="absolute top-4 bottom-4"
+        style={{ left: "15px", width: "1px", background: "linear-gradient(to bottom, transparent, rgba(160,98,42,0.35) 10%, rgba(160,98,42,0.35) 90%, transparent)" }}
+      />
+      <div className="space-y-1">
+        {EXPERIENCE_JOBS.map((job, i) => {
+          const accent = EXP_ACCENT[i % EXP_ACCENT.length];
+          const isOpen = expanded === i;
+          return (
+            <div key={i}>
+              <button
+                onClick={() => setExpanded(isOpen ? null : i)}
+                className="w-full text-left flex gap-5 group py-3 relative"
+              >
+                <div
+                  className="relative z-10 flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center mt-0.5 transition-all duration-300"
+                  style={{ borderColor: accent, background: isOpen ? `${accent}28` : "rgba(26,14,8,0.9)" }}
+                >
+                  <div
+                    className="w-2 h-2 rounded-full transition-transform duration-200"
+                    style={{ background: accent, transform: isOpen ? "scale(1.35)" : "scale(1)" }}
+                  />
+                </div>
+                <div className="flex-1 flex flex-col md:flex-row md:items-start md:justify-between min-w-0 gap-1 md:gap-4">
+                  <div className="min-w-0">
+                    <h3 className="text-base font-serif font-semibold text-coffee-foam group-hover:text-coffee-latte transition-colors">{job.company}</h3>
+                    <p className="text-sm font-sans" style={{ color: accent }}>{job.role}</p>
+                  </div>
+                  <div className="text-xs font-mono text-coffee-bronze flex-shrink-0 text-left md:text-right">
+                    <div>{job.date}</div>
+                    <div className="opacity-70">{job.location}</div>
+                  </div>
+                </div>
+              </button>
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    key={`exp-${i}`}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.32 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pb-4 pl-4" style={{ marginLeft: "33px", borderLeft: `1px solid ${accent}28` }}>
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {job.tech.map(t => (
+                          <span
+                            key={t}
+                            className="text-xs font-mono px-2.5 py-1 rounded-md border text-coffee-latte"
+                            style={{ background: `${accent}12`, borderColor: `${accent}30` }}
+                          >{t}</span>
+                        ))}
+                      </div>
+                      <ul className="space-y-2.5">
+                        {job.bullets.map((b, j) => (
+                          <li key={j} className="flex gap-3 text-sm font-sans text-coffee-latte/70 leading-relaxed">
+                            <span className="flex-shrink-0 mt-1" style={{ color: accent }}>▹</span>
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ─── 3D flip card (projects) ─── */
+function FlipCard({ project, index }: { project: typeof PROJECTS[number]; index: number }) {
+  const [flipped, setFlipped] = React.useState(false);
+  return (
+    <motion.div variants={STAGGER_CHILDREN} className="h-[440px]" style={{ perspective: "1000px" }}>
+      <motion.div
+        onClick={() => setFlipped(f => !f)}
+        animate={{ rotateY: flipped ? 180 : 0 }}
+        transition={{ duration: 0.65, ease: [0.4, 0, 0.2, 1] }}
+        style={{ transformStyle: "preserve-3d", WebkitTransformStyle: "preserve-3d" as any, position: "relative", width: "100%", height: "100%", cursor: "pointer" }}
+        whileHover={!flipped ? { scale: 1.012 } : undefined}
+      >
+        {/* Front */}
+        <div
+          className="absolute inset-0 rounded-xl overflow-hidden border border-coffee-bronze/20 bg-coffee-espresso/65 flex flex-col"
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" as any }}
+        >
+          <div className="h-44 overflow-hidden relative flex-shrink-0">
+            <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(18,10,4,0.85) 0%, transparent 60%)" }} />
+            <div className="absolute bottom-3 left-4">
+              <span className="font-mono text-xs text-coffee-bronze/70">0{index + 1}</span>
+            </div>
+          </div>
+          <div className="p-5 flex flex-col flex-1">
+            <h3 className="text-base font-serif font-semibold text-coffee-cream mb-2 leading-snug">{project.title}</h3>
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {project.tech.slice(0, 4).map(t => (
+                <span key={t} className="text-xs font-mono px-2 py-0.5 rounded bg-coffee-bronze/12 text-coffee-latte">{t}</span>
+              ))}
+              {project.tech.length > 4 && (
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-coffee-bronze/8 text-coffee-bronze/55">+{project.tech.length - 4}</span>
+              )}
+            </div>
+            <p className="text-xs font-sans text-coffee-bronze/55 mt-auto flex items-center gap-1.5">
+              <span>Click to read details</span>
+              <ExternalLink size={10} />
+            </p>
+          </div>
+        </div>
+
+        {/* Back */}
+        <div
+          className="absolute inset-0 rounded-xl border border-coffee-latte/20 bg-coffee-mocha flex flex-col p-5"
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" as any, transform: "rotateY(180deg)" }}
+        >
+          <div className="flex justify-between items-start mb-3">
+            <h3 className="text-sm font-serif font-semibold text-coffee-latte leading-snug flex-1 pr-3">{project.title}</h3>
+            <button
+              onClick={e => { e.stopPropagation(); setFlipped(false); }}
+              className="text-coffee-bronze/50 hover:text-coffee-latte transition-colors text-base flex-shrink-0"
+              aria-label="Flip back"
+            >✕</button>
+          </div>
+          <p className="text-sm font-sans text-coffee-cream/75 leading-relaxed flex-1 overflow-y-auto">{project.description}</p>
+          <div className="mt-3">
+            <p className="text-xs font-mono text-coffee-bronze uppercase tracking-wider mb-2">Tech Stack</p>
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {project.tech.map(t => (
+                <span key={t} className="text-xs font-mono px-2 py-0.5 rounded bg-coffee-latte/10 text-coffee-latte border border-coffee-latte/15">{t}</span>
+              ))}
+            </div>
+          </div>
+          {project.note && <p className="text-xs italic font-sans text-coffee-bronze/50 mb-2">{project.note}</p>}
+          {(project.github || project.demo) && (
+            <div className="flex gap-4 mt-1">
+              {project.github && (
+                <a href={project.github!} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
+                  className="flex items-center gap-1.5 text-xs font-sans text-coffee-bronze hover:text-coffee-latte transition-colors">
+                  <Github size={12} /> Code
+                </a>
+              )}
+              {project.demo && (
+                <a href={project.demo!} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
+                  className="flex items-center gap-1.5 text-xs font-sans text-coffee-bronze hover:text-coffee-latte transition-colors">
+                  <ExternalLink size={12} /> Demo
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ─── Certification stamp badge ─── */
+function CertBadge({ cert, index }: { cert: typeof CERTS[number]; index: number }) {
+  return (
+    <motion.div
+      initial={{ scale: 0.5, rotate: -18, opacity: 0 }}
+      whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ type: "spring", stiffness: 280, damping: 14, delay: index * 0.14 }}
+      whileHover={{ scale: 1.03, rotate: 1, y: -3 }}
+      className="p-5 rounded-xl flex items-center gap-4 border border-coffee-bronze/25 bg-coffee-espresso/60"
+      style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(160,98,42,0.06)" }}
+    >
+      <motion.div
+        initial={{ scale: 0.3, rotate: -28 }}
+        whileInView={{ scale: 1, rotate: 0 }}
+        viewport={{ once: true }}
+        transition={{ type: "spring", stiffness: 380, damping: 10, delay: index * 0.14 + 0.08 }}
+        className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 border-2 border-coffee-bronze/50 bg-coffee-bronze/15 text-coffee-latte font-mono font-bold text-xs"
+      >
+        {cert.icon}
+      </motion.div>
+      <div>
+        <p className="font-sans font-semibold text-sm text-coffee-foam leading-snug">{cert.title}</p>
+        <p className="font-mono text-xs mt-1 text-coffee-bronze">{cert.provider}</p>
+        <p className="font-mono text-xs text-coffee-bronze/55">{cert.year}</p>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Education expandable card ─── */
+function EducationCard({ edu }: { edu: typeof EDUCATION[number] }) {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <motion.div
+      variants={STAGGER_CHILDREN}
+      onClick={() => setOpen(o => !o)}
+      className="rounded-xl border border-coffee-bronze/20 bg-coffee-espresso/60 overflow-hidden cursor-pointer hover:border-coffee-latte/30 transition-colors duration-200"
+      style={{ boxShadow: "0 2px 16px rgba(0,0,0,0.18)" }}
+    >
+      <div className="p-5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1">
+            <h4 className="font-serif font-semibold text-sm text-coffee-foam mb-1 leading-snug">{edu.degree}</h4>
+            <div className="font-sans text-sm text-coffee-latte">{edu.school}</div>
+          </div>
+          <motion.span
+            animate={{ rotate: open ? 180 : 0 }}
+            transition={{ duration: 0.25 }}
+            className="text-coffee-bronze/60 mt-0.5 flex-shrink-0 text-base"
+          >▾</motion.span>
+        </div>
+        <div className="flex justify-between text-xs font-mono text-coffee-bronze mt-3">
+          <span>{edu.location}</span>
+          <span>{edu.date}</span>
+        </div>
+      </div>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="edu-body"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28 }}
+            className="overflow-hidden"
+          >
+            <div className="border-t border-coffee-bronze/15 px-5 pb-5 pt-4 space-y-3">
+              <div>
+                <p className="text-xs font-mono text-coffee-bronze uppercase tracking-wider mb-2">Key Coursework</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {edu.coursework.map(c => (
+                    <span key={c} className="text-xs font-sans px-2.5 py-1 rounded-md bg-coffee-bronze/10 text-coffee-latte/80 border border-coffee-bronze/20">{c}</span>
+                  ))}
+                </div>
+              </div>
+              <p className="text-sm font-sans italic text-coffee-latte/60 leading-relaxed">{edu.narrative}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
@@ -444,105 +850,14 @@ export default function Home() {
             viewport={{ once: true, margin: "-100px" }}
             variants={STAGGER_CONTAINER}
           >
-            <motion.h2 variants={STAGGER_CHILDREN} className="text-3xl font-serif font-bold text-coffee-foam mb-12 flex items-center gap-3">
-              <span className="font-mono text-lg font-normal text-coffee-bronze">01.</span> Experience
+            <motion.h2 variants={STAGGER_CHILDREN} className="text-3xl font-serif font-bold text-coffee-foam mb-10 flex items-center gap-3">
+              <SteamDeco />
+              <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">01.</span> Experience
             </motion.h2>
 
-            <Accordion type="single" collapsible className="w-full space-y-4" defaultValue="item-0">
-              {[
-                {
-                  company: "Franchise Tax Board",
-                  role: "IT Associate",
-                  date: "Jan 2026 – Present",
-                  location: "Sacramento, CA",
-                  tech: ["Python", "Flask", "FastAPI", "SQL Server", "T-SQL", "REST APIs", "Automation"],
-                  bullets: [
-                    "Built internal backend services and workflow automation for regulated tax operations",
-                    "Owned features across the full product lifecycle — from analyst pain points to deployment",
-                    "Developed SQL-driven application logic using complex T-SQL, CTEs, window functions, and KPI rules across large state tax datasets",
-                    "Automated recurring weekly, monthly, and annual processes, reducing manual handoffs for audit, compliance, and operational teams"
-                  ]
-                },
-                {
-                  company: "University of South Florida",
-                  role: "BI Engineer Intern",
-                  date: "Oct 2023 – May 2025",
-                  location: "Tampa, FL",
-                  tech: ["Power BI", "SSRS", "Snowflake", "Python", "SQL", "Excel"],
-                  bullets: [
-                    "Owned end-to-end development of a Power BI ticketing product for USF IT",
-                    "Built self-service finance reporting for 3–5 campus units using SSRS, Power BI, SQL, Python, Snowflake, and Excel",
-                    "Cleaned, joined, and modeled operational datasets to improve reporting accuracy",
-                    "Worked directly with Finance and IT stakeholders on usability and metric documentation"
-                  ]
-                },
-                {
-                  company: "Cognizant Technology Solutions",
-                  role: "Data Engineer (Gilead Sciences)",
-                  date: "Jan 2022 – Jul 2023",
-                  location: "Chennai, India",
-                  tech: ["PySpark", "AWS", "Glue", "Athena", "Redshift", "Airflow/MWAA", "ETL"],
-                  bullets: [
-                    "Engineered production PySpark ETL pipelines on AWS for Gilead Sciences clinical and marketing analytics",
-                    "Owned reliability for SLA-bound pipelines — monitoring, failure triage, debugging, overnight on-call support",
-                    "Built new pipelines and hardened inherited systems in a 3-engineer team",
-                    "Implemented reconciliation and validation checks across ~100K records/run for regulated life sciences data delivery"
-                  ]
-                },
-                {
-                  company: "Samsung R&D Institute",
-                  role: "Research Intern — Gesture Recognition",
-                  date: "Apr 2021 – Dec 2021",
-                  location: "Bengaluru, India",
-                  tech: ["Python", "OpenCV", "pandas", "SciPy", "scikit-learn", "Android"],
-                  bullets: [
-                    "Built an ML prototype for touchless smart TV control and gaming using camera-based hand gestures",
-                    "Designed gesture taxonomies that balanced recognition accuracy with natural user movement",
-                    "Created a labeled gesture dataset from thousands of motion sequences",
-                    "Trained and integrated ML models into an Android demo showing end-to-end product thinking"
-                  ]
-                }
-              ].map((job, i) => (
-                <AccordionItem
-                  key={i}
-                  value={`item-${i}`}
-                  className="rounded-xl overflow-hidden px-6 border border-coffee-bronze/25 bg-coffee-espresso/60 transition-all duration-200"
-                >
-                  <AccordionTrigger className="hover:no-underline py-6">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between w-full pr-4 text-left">
-                      <div>
-                        <h3 className="text-lg font-serif font-semibold text-coffee-foam">{job.role}</h3>
-                        <p className="font-medium mt-1 text-sm font-sans text-coffee-latte">{job.company}</p>
-                      </div>
-                      <div className="mt-2 md:mt-0 text-xs font-mono text-coffee-bronze text-left md:text-right">
-                        <div>{job.date}</div>
-                        <div className="mt-0.5">{job.location}</div>
-                      </div>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="pb-6">
-                    <div className="mb-4 flex flex-wrap gap-2">
-                      {job.tech.map(t => (
-                        <span
-                          key={t}
-                          className="text-xs font-mono px-2.5 py-1 rounded-md bg-coffee-bronze/12 text-coffee-latte border border-coffee-bronze/25"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                    <ul className="space-y-3 mt-4">
-                      {job.bullets.map((bullet, j) => (
-                        <li key={j} className="flex gap-3 font-sans text-sm leading-relaxed text-coffee-latte/70">
-                          <span className="mt-1 flex-shrink-0 text-coffee-bronze">▹</span>
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <motion.div variants={STAGGER_CHILDREN}>
+              <ExperienceTimeline />
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -558,86 +873,13 @@ export default function Home() {
             variants={STAGGER_CONTAINER}
           >
             <motion.h2 variants={STAGGER_CHILDREN} className="text-3xl font-serif font-bold text-coffee-foam mb-12 flex items-center gap-3">
-              <span className="font-mono text-lg font-normal text-coffee-bronze">02.</span> Selected Projects
+              <SteamDeco />
+              <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">02.</span> Selected Projects
             </motion.h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  title: "USF Power BI Ticketing Dashboard",
-                  description: "Gave USF IT teams real-time visibility into equipment support work by owner, assignment, status, and resolution. Built end-to-end from data modeling to dashboard delivery.",
-                  tech: ["Power BI", "SQL", "Python", "SSRS", "Snowflake"],
-                  image: project1Img,
-                  github: null as string | null,
-                  demo: null as string | null,
-                  note: "Internal enterprise tool — source code is proprietary."
-                },
-                {
-                  title: "Gilead Sciences ETL Pipeline Platform",
-                  description: "Production PySpark pipelines on AWS supporting clinical and marketing analytics for a life sciences company. Included reconciliation across 100K+ records/run.",
-                  tech: ["PySpark", "AWS S3", "Glue", "Athena", "Airflow"],
-                  image: project2Img,
-                  github: null as string | null,
-                  demo: null as string | null,
-                  note: "Proprietary production system — code is confidential."
-                },
-                {
-                  title: "Samsung Gesture Recognition Demo",
-                  description: "Applied ML prototype for touchless smart TV and gaming control. Replaced remote control actions with camera-based hand gestures, deployed as an Android demo.",
-                  tech: ["Python", "OpenCV", "scikit-learn", "Android"],
-                  image: project3Img,
-                  github: null as string | null,
-                  demo: null as string | null,
-                  note: "Research internship project — source not publicly available."
-                }
-              ].map((project, i) => (
-                <motion.div key={i} variants={STAGGER_CHILDREN} className="h-full group">
-                  <div className="h-full flex flex-col rounded-xl overflow-hidden border border-coffee-bronze/20 bg-coffee-espresso/65 hover:border-coffee-latte/35 transition-all duration-300 hover:-translate-y-0.5" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.3)" }}>
-                    <div className="h-48 overflow-hidden relative">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(18,10,4,0.7) 0%, transparent 60%)" }} />
-                    </div>
-                    <div className="p-6 flex flex-col flex-grow">
-                      <h3 className="text-lg font-serif font-semibold text-coffee-cream group-hover:text-coffee-latte transition-colors duration-200 mb-3">
-                        {project.title}
-                      </h3>
-                      <p className="text-sm leading-relaxed mb-4 flex-grow font-sans text-coffee-latte/65">
-                        {project.description}
-                      </p>
-                      <div className="mt-auto">
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {project.tech.map(t => (
-                            <span key={t} className="text-xs font-mono px-2 py-0.5 rounded bg-coffee-bronze/12 text-coffee-latte">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                        {(project.github || project.demo) ? (
-                          <div className="flex gap-4">
-                            {project.github && (
-                              <a href={project.github} target="_blank" rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 text-xs font-sans text-coffee-bronze hover:text-coffee-latte transition-colors">
-                                <Github size={14} /> Code
-                              </a>
-                            )}
-                            {project.demo && (
-                              <a href={project.demo} target="_blank" rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 text-xs font-sans text-coffee-bronze hover:text-coffee-latte transition-colors">
-                                <ExternalLink size={14} /> Live Demo
-                              </a>
-                            )}
-                          </div>
-                        ) : (
-                          <p className="text-xs italic font-sans text-coffee-bronze/55">{project.note}</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
+              {PROJECTS.map((project, i) => (
+                <FlipCard key={i} project={project} index={i} />
               ))}
             </div>
           </motion.div>
@@ -655,41 +897,16 @@ export default function Home() {
             variants={STAGGER_CONTAINER}
           >
             <motion.h2 variants={STAGGER_CHILDREN} className="text-3xl font-serif font-bold text-coffee-foam mb-12 flex items-center gap-3">
-              <span className="font-mono text-lg font-normal text-coffee-bronze">03.</span> Technical Stack
+              <SteamDeco />
+              <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">03.</span> Technical Stack
             </motion.h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {[
-                {
-                  title: "Backend & APIs",
-                  icon: <FileCode2 size={20} />,
-                  skills: ["Python", "Flask", "FastAPI", "Node.js", "REST APIs", "C# MVC", "Automation", "Service Logic"]
-                },
-                {
-                  title: "Frontend",
-                  icon: <ExternalLink size={20} />,
-                  skills: ["JavaScript", "HTML/CSS", "React", "Responsive Web Apps", "Power BI Product Experiences"]
-                },
-                {
-                  title: "Cloud & Data Engineering",
-                  icon: <Cloud size={20} />,
-                  skills: ["AWS S3", "Glue", "Athena", "Redshift", "Lambda", "Airflow", "PySpark", "Snowflake", "ETL/ELT"]
-                },
-                {
-                  title: "Databases & BI",
-                  icon: <Database size={20} />,
-                  skills: ["SQL Server", "PostgreSQL", "Snowflake", "Teradata", "T-SQL", "Power BI", "SSRS", "Tableau", "Excel"]
-                },
-                {
-                  title: "AI & Dev Tools",
-                  icon: <Terminal size={20} />,
-                  skills: ["Claude", "ChatGPT", "GitHub Copilot", "Replit", "Lovable", "AI-Assisted Development", "Prompt-Driven Prototyping"]
-                }
-              ].map((category, i) => (
+              {SKILL_CATEGORIES.map((category, i) => (
                 <motion.div
                   key={i}
                   variants={STAGGER_CHILDREN}
-                  className="p-6 rounded-xl border border-coffee-bronze/20 bg-coffee-espresso/55 transition-all duration-200"
+                  className="p-6 rounded-xl border border-coffee-bronze/20 bg-coffee-espresso/55 hover:border-coffee-bronze/35 transition-colors duration-200"
                 >
                   <div className="flex items-center gap-3 mb-5">
                     <span className="text-coffee-bronze">{category.icon}</span>
@@ -697,12 +914,15 @@ export default function Home() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {category.skills.map(skill => (
-                      <span
+                      <motion.span
                         key={skill}
-                        className="text-xs font-sans px-3 py-1.5 rounded-md border border-coffee-bronze/25 text-coffee-latte/75 bg-coffee-bronze/6 hover:border-coffee-latte/40 transition-colors duration-200"
+                        whileHover={{ y: -3, scale: 1.08 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                        className="text-xs font-sans px-3 py-1.5 rounded-md border border-coffee-bronze/25 text-coffee-latte/80 bg-coffee-bronze/6 cursor-default"
+                        style={{ display: "inline-block" }}
                       >
                         {skill}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                 </motion.div>
@@ -725,68 +945,24 @@ export default function Home() {
           >
             <div>
               <motion.h2 variants={STAGGER_CHILDREN} className="text-2xl font-serif font-bold text-coffee-foam mb-8 flex items-center gap-3">
-                <span className="font-mono text-lg font-normal text-coffee-bronze">04.</span> Education
+                <SteamDeco />
+                <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">04.</span> Education
               </motion.h2>
-              <div className="space-y-5">
-                {[
-                  {
-                    degree: "M.S., Business Analytics & Information Systems",
-                    school: "University of South Florida",
-                    location: "Tampa, FL",
-                    date: "May 2025",
-                    url: "https://www.usf.edu"
-                  },
-                  {
-                    degree: "B.Tech, Electronics & Communication Engineering",
-                    school: "Karunya University",
-                    location: "Coimbatore, India",
-                    date: "May 2022",
-                    url: "https://www.karunya.edu"
-                  }
-                ].map((edu, i) => (
-                  <motion.div key={i} variants={STAGGER_CHILDREN}>
-                    <a
-                      href={edu.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block p-5 rounded-xl border border-coffee-bronze/20 bg-coffee-espresso/60 hover:border-coffee-latte/35 transition-all duration-200 group"
-                    >
-                      <h4 className="font-serif font-semibold text-base text-coffee-foam group-hover:text-coffee-latte transition-colors mb-1">
-                        {edu.degree}
-                      </h4>
-                      <div className="font-sans text-sm text-coffee-latte mb-3">{edu.school}</div>
-                      <div className="flex justify-between text-xs font-mono text-coffee-bronze">
-                        <span>{edu.location}</span>
-                        <span>{edu.date}</span>
-                      </div>
-                    </a>
-                  </motion.div>
+              <div className="space-y-4">
+                {EDUCATION.map((edu, i) => (
+                  <EducationCard key={i} edu={edu} />
                 ))}
               </div>
             </div>
 
             <div>
               <motion.h2 variants={STAGGER_CHILDREN} className="text-2xl font-serif font-bold text-coffee-foam mb-8 flex items-center gap-3">
-                <span className="font-mono text-lg font-normal text-coffee-bronze">05.</span> Certifications
+                <SteamDeco />
+                <span className="font-mono text-lg font-normal text-coffee-bronze mr-1">05.</span> Certifications
               </motion.h2>
-              <div className="space-y-5">
-                {[
-                  { title: "AWS Certified Solutions Architect – Associate", label: "AWS" },
-                  { title: "Microsoft PL-300 Power BI Data Analyst", label: "Microsoft" }
-                ].map((cert, i) => (
-                  <motion.div
-                    key={i}
-                    variants={STAGGER_CHILDREN}
-                    className="p-5 rounded-xl flex items-center gap-4 border border-coffee-bronze/25 bg-coffee-espresso/60 transition-all duration-200"
-                  >
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-coffee-bronze/15 text-coffee-latte border border-coffee-bronze/30 font-serif font-bold text-xs">
-                      ★
-                    </div>
-                    <div>
-                      <p className="font-sans font-semibold text-sm text-coffee-foam">{cert.title}</p>
-                      <p className="font-mono text-xs mt-0.5 text-coffee-bronze">{cert.label}</p>
-                    </div>
-                  </motion.div>
+              <div className="space-y-4">
+                {CERTS.map((cert, i) => (
+                  <CertBadge key={i} cert={cert} index={i} />
                 ))}
               </div>
             </div>

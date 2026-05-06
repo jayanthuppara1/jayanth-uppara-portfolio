@@ -33,15 +33,16 @@ Interactive personal portfolio website for Jayanth Uppara (Product Engineer / Fu
 - Coffee palette: espresso `#1a0e08`, latte `#c9a97a`, bronze `#a0622a` as Tailwind v4 tokens
 - framer-motion **must stay** in `resolve.dedupe` — removing it causes "Cannot read properties of null (reading 'useRef')" at runtime
 - STAGGER_CHILDREN variants must NOT use `ease: "easeOut"` string — Framer Motion rejects plain string easing
-- Single Home.tsx with all sections inline + hero sub-components (SpeechBubble, AnimatedCoffeeCup defined at top of file)
+- Single Home.tsx with all sections inline; data constants (PROJECTS, EDUCATION, CERTS, SKILL_CATEGORIES, EXPERIENCE_JOBS) at top; sub-components (FlipCard, CertBadge, EducationCard, ExperienceTimeline, SteamDeco) defined before MetricCard
 
 ## Product
 
 - **Hero**: Two-column (text left, animated coffee cup illustration right); CoffeeMugLetter SVG replaces the "J"; rotating speech bubble taglines; 4 CTA buttons (View Projects, Resume ↓, GitHub, LinkedIn)
-- **Experience**: Accordion cards — FTB, USF, Cognizant, Samsung
-- **Projects**: 3 project cards with AI-generated images
-- **Skills**: Categorized (Backend, Cloud/Data, Databases/BI, AI Tools)
-- **Education & Certs**: USF MSBA + Karunya BTech; AWS SAA + PL-300
+- **Experience**: Vertical timeline — FTB, USF, Cognizant, Samsung; click to expand; colored dot per company
+- **Projects**: 3D flip cards (click to flip); front shows image/title; back shows description, full tech stack, links
+- **Skills**: 6 categories (Backend, Frontend, Cloud, Databases, BI & Analytics, AI Tools); hover-lift chips
+- **Education**: Expandable cards (click ▾ to reveal coursework + narrative); AnimatePresence height animation
+- **Certifications**: Stamp/spring badges (AWS, PL-300); scale+rotate spring on scroll-into-view
 - **Contact**: mailto, LinkedIn, GitHub, resume download
 - **Metrics Snapshot**: Animated counters (4+ yrs, 2 degrees, 3+ certs, 5+ projects…)
 
