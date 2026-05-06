@@ -394,12 +394,12 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* ── RIGHT: Animated illustration ── */}
+            {/* ── RIGHT (lg) / BELOW (mobile): Animated illustration ── */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="hidden lg:flex flex-col items-center gap-0 flex-shrink-0"
+              className="flex flex-col items-center gap-0 flex-shrink-0 opacity-80 lg:opacity-100"
             >
               <SpeechBubble />
               <AnimatedCoffeeCup />

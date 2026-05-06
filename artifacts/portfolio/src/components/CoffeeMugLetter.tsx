@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 interface Props {
   className?: string;
@@ -6,6 +6,13 @@ interface Props {
 
 export default function CoffeeMugLetter({ className = "" }: Props) {
   const [hovering, setHovering] = useState(false);
+
+  /* Hover transitions: latte → espresso fill, latte → foam stroke */
+  const bodyFill   = hovering ? "rgba(59, 31, 18, 0.55)" : "rgba(160, 98, 42, 0.12)";
+  const strokeColor = hovering ? "#fdf6ee" : "#c9a97a";
+  const dropShadow  = hovering
+    ? "drop-shadow(0 0 8px rgba(201,169,122,0.5))"
+    : "none";
 
   return (
     <span
@@ -22,7 +29,7 @@ export default function CoffeeMugLetter({ className = "" }: Props) {
         xmlns="http://www.w3.org/2000/svg"
         style={{ display: "inline", verticalAlign: "baseline", overflow: "visible" }}
       >
-        {/* ── Steam wisps (visible on hover, animated) ── */}
+        {/* ── Steam wisps (fade in on hover, run CSS animation) ── */}
         <g style={{ opacity: hovering ? 1 : 0, transition: "opacity 0.4s ease" }}>
           <path
             d="M 14 24 C 12 16 17 11 15 4"
@@ -47,50 +54,51 @@ export default function CoffeeMugLetter({ className = "" }: Props) {
           />
         </g>
 
-        {/* ── Mug body (forms the J shape: tall with rounded bottom) ── */}
+        {/* ── Mug body — fill deepens to espresso, stroke lightens to foam on hover ── */}
         <path
           d="M 6 26 L 42 26 L 42 68 Q 42 84 24 84 Q 6 84 6 68 Z"
-          fill="rgba(160, 98, 42, 0.12)"
-          stroke="#c9a97a"
+          fill={bodyFill}
+          stroke={strokeColor}
           strokeWidth="2.8"
           strokeLinejoin="round"
           style={{
-            filter: hovering ? "drop-shadow(0 0 6px rgba(201,169,122,0.35))" : "none",
-            transition: "filter 0.3s ease",
+            filter: dropShadow,
+            transition: "fill 0.35s ease, stroke 0.35s ease, filter 0.35s ease",
           }}
         />
 
-        {/* ── Mug handle (right side — classic loop) ── */}
+        {/* ── Handle — stroke matches body stroke ── */}
         <path
           d="M 42 36 C 58 36 58 62 42 62"
-          stroke="#c9a97a"
+          stroke={strokeColor}
           strokeWidth="2.8"
           strokeLinecap="round"
           style={{
-            filter: hovering ? "drop-shadow(0 0 6px rgba(201,169,122,0.35))" : "none",
-            transition: "filter 0.3s ease",
+            filter: dropShadow,
+            transition: "stroke 0.35s ease, filter 0.35s ease",
           }}
         />
 
-        {/* ── Inner rim line (open top of cup) ── */}
+        {/* ── Inner rim line ── */}
         <line
           x1="9"
           y1="33"
           x2="39"
           y2="33"
-          stroke="#a0622a"
+          stroke={hovering ? "#c9a97a" : "#a0622a"}
           strokeWidth="1"
           strokeLinecap="round"
-          opacity="0.5"
+          style={{ transition: "stroke 0.35s ease", opacity: 0.6 }}
         />
 
-        {/* ── Coffee liquid surface inside the cup ── */}
+        {/* ── Coffee liquid surface ── */}
         <ellipse
           cx="24"
           cy="33"
           rx="15"
           ry="3"
-          fill="rgba(59, 31, 18, 0.55)"
+          fill={hovering ? "rgba(59, 31, 18, 0.85)" : "rgba(59, 31, 18, 0.55)"}
+          style={{ transition: "fill 0.35s ease" }}
         />
       </svg>
     </span>
