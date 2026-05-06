@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -58,46 +59,67 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Coffee palette as Tailwind color tokens */
+  --color-coffee-espresso: #1a0e08;
+  --color-coffee-mocha: #3b1f12;
+  --color-coffee-latte: #c9a97a;
+  --color-coffee-cream: #f5ede0;
+  --color-coffee-foam: #fdf6ee;
+  --color-coffee-bronze: #a0622a;
+  --color-coffee-bronze-light: #c27a3a;
+  --color-coffee-dark: #120a04;
 }
 
 :root {
-  /* Dark mode as default */
   color-scheme: dark;
-  
-  --background: 224 71% 4%;
-  --foreground: 213 31% 91%;
 
-  --muted: 223 47% 11%;
-  --muted-foreground: 215.4 16.3% 56.9%;
+  /* Raw coffee palette vars */
+  --coffee-espresso: #1a0e08;
+  --coffee-mocha: #3b1f12;
+  --coffee-latte: #c9a97a;
+  --coffee-cream: #f5ede0;
+  --coffee-foam: #fdf6ee;
+  --coffee-bronze: #a0622a;
+  --coffee-bronze-light: #c27a3a;
+  --coffee-dark: #120a04;
 
-  --popover: 224 71% 4%;
-  --popover-foreground: 215 20.2% 65.1%;
-  --popover-border: 216 34% 17%;
+  /* Semantic tokens mapped to coffee palette (HSL) */
+  --background: 20 56% 6%;
+  --foreground: 33 57% 92%;
 
-  --card: 224 71% 4%;
-  --card-foreground: 213 31% 91%;
-  --card-border: 216 34% 17%;
+  --muted: 20 42% 13%;
+  --muted-foreground: 33 22% 58%;
 
-  --border: 216 34% 17%;
-  --input: 216 34% 17%;
+  --popover: 20 56% 6%;
+  --popover-foreground: 33 57% 92%;
+  --popover-border: 25 38% 20%;
 
-  --primary: 189 94% 43%;
-  --primary-foreground: 222.2 47.4% 1.2%;
+  --card: 20 48% 9%;
+  --card-foreground: 33 57% 92%;
+  --card-border: 25 38% 20%;
 
-  --secondary: 222.2 47.4% 11.2%;
-  --secondary-foreground: 210 40% 98%;
+  --border: 25 38% 20%;
+  --input: 25 38% 20%;
 
-  --accent: 189 94% 43%;
-  --accent-foreground: 210 40% 98%;
+  --primary: 32 48% 63%;
+  --primary-foreground: 20 56% 6%;
+
+  --secondary: 20 42% 13%;
+  --secondary-foreground: 33 57% 92%;
+
+  --accent: 28 58% 40%;
+  --accent-foreground: 33 57% 92%;
 
   --destructive: 0 63% 31%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive-foreground: 33 57% 92%;
 
-  --ring: 189 94% 43%;
+  --ring: 32 48% 63%;
 
   --radius: 0.5rem;
-  
-  --app-font-sans: 'Inter', system-ui, sans-serif;
+
+  --app-font-sans: 'DM Sans', system-ui, sans-serif;
+  --app-font-serif: 'Playfair Display', Georgia, serif;
   --app-font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -106,13 +128,37 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply text-foreground font-sans antialiased;
+    background: linear-gradient(160deg, #120a04 0%, #1a0e08 50%, #1f1209 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
   }
   html {
     scroll-behavior: smooth;
   }
+  h1, h2, h3 {
+    font-family: var(--app-font-serif);
+  }
+  ::selection {
+    background: rgba(201, 169, 122, 0.28);
+    color: #fdf6ee;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #120a04;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #a0622a;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #c9a97a;
+  }
 }
 
+/* Custom cursor */
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
   body {
     cursor: none;
@@ -129,7 +175,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--color-primary);
+  background-color: #c9a97a;
   pointer-events: none;
   z-index: 9999;
   will-change: transform;
@@ -143,9 +189,37 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1.5px solid rgba(13, 213, 230, 0.5);
+  border: 1.5px solid rgba(201, 169, 122, 0.5);
   pointer-events: none;
   z-index: 9998;
   will-change: transform;
   transition: opacity 0.2s, width 0.2s, height 0.2s, border-color 0.2s;
+}
+
+/* Warm gradient text */
+.text-latte-gradient {
+  background: linear-gradient(135deg, #c9a97a 0%, #fdf6ee 55%, #c9a97a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Thin warm divider */
+.coffee-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(160, 98, 42, 0.45), transparent);
+}
+
+/* Metric counter animation */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fade-up 0.6s ease both;
+}
+
+/* Glow for latte accent */
+.latte-glow {
+  box-shadow: 0 0 24px rgba(201, 169, 122, 0.12), 0 0 8px rgba(160, 98, 42, 0.08);
 }
