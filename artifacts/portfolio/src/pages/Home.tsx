@@ -5,6 +5,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import CustomCursor from "@/components/CustomCursor";
+import HeroParticles from "@/components/HeroParticles";
 
 import project1Img from "../assets/project-1.png";
 import project2Img from "../assets/project-2.png";
@@ -51,6 +53,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden selection:bg-primary/30">
+      <CustomCursor />
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 border-b border-border/40 bg-background/80 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -67,10 +70,11 @@ export default function Home() {
 
       {/* Hero Section */}
       <section id="about" className="relative min-h-[100dvh] flex items-center pt-16">
-        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-          <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-primary opacity-20 blur-[100px]"></div>
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-primary opacity-10 blur-[100px]"></div>
         </div>
+        <HeroParticles />
         
         <div className="max-w-6xl mx-auto px-6 w-full z-10 relative">
           <motion.div 

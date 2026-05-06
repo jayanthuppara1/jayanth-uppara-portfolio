@@ -112,3 +112,40 @@
     scroll-behavior: smooth;
   }
 }
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  body {
+    cursor: none;
+  }
+  a, button, [role="button"], input, textarea, select, label {
+    cursor: none;
+  }
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(13, 213, 230, 0.5);
+  pointer-events: none;
+  z-index: 9998;
+  will-change: transform;
+  transition: opacity 0.2s, width 0.2s, height 0.2s, border-color 0.2s;
+}
