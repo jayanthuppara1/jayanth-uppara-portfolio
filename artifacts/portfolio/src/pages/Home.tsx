@@ -487,9 +487,9 @@ const PROJECTS = [
     solution: "Full-stack web app with real-time collaborative boards, role-based access, and automated notifications. Designed and shipped end-to-end as a solo project.",
     tech: ["React", "Node.js", "PostgreSQL", "REST APIs", "Tailwind CSS"],
     image: project1Img,
-    github: "https://github.com/jayanthu" as string | null,
+    github: null as string | null,
     demo: null as string | null,
-    note: null as string | null
+    note: "Personal project — actively in development" | null
   },
   {
     title: "Photo Organizer",
@@ -509,8 +509,8 @@ const PROJECTS = [
     solution: "Responsive campus dining discovery app aggregating menus, hours, and dietary info with search and filter across all USF dining locations.",
     tech: ["React", "Python", "Flask", "PostgreSQL", "REST APIs"],
     image: project3Img,
-    github: null as string | null,
-    demo: null as string | null,
+    github: "https://github.com/PriyaankaReddyB/usf-dining-web-app"| null,
+    demo: "https://priyaankareddyb.github.io/usf-dining-web-app/" | null,
     note: "University project — source in private academic repository."
   }
 ];
@@ -1192,7 +1192,7 @@ export default function Home() {
     "Product Engineer",
     "Full-Stack Software Engineer",
     "Backend & Cloud Builder",
-    "AI-Assisted Builder",
+    "Applied AI Engineer",
   ];
 
   useEffect(() => {
@@ -1637,7 +1637,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-1">
             <span className="font-serif font-bold text-lg text-coffee-latte">Jayanth Uppara</span>
-            <span className="font-mono text-xs text-coffee-bronze">Product Engineer · Tampa, FL</span>
+            <span className="font-mono text-xs text-coffee-bronze">Applied AI Engineer · Tampa, FL</span>
           </div>
           <div className="flex items-center gap-6">
             {[
