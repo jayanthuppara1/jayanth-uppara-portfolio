@@ -4,7 +4,7 @@
 
 A coffee-themed personal portfolio built to showcase my engineering experience, featured projects, and skills in a way that's a little more interesting than a PDF.
 
-![Portfolio Preview](./screenshots/portfolio-preview.jpg)
+![Preview](./screenshots/portfolio-preview.jpg)
 
 ---
 
